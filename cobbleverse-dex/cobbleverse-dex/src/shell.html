@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>코블버스 출현 도감</title>
+<title>코블버스 도감</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
@@ -146,15 +146,93 @@ dialog::backdrop{background:rgba(10,20,25,.55)}
  .c-no{width:auto;grid-row:1}.c-name{width:auto}.c-rar{grid-column:1/-1;width:auto}.c-spawn{grid-column:1/-1}
 }
 @media (prefers-reduced-motion:reduce){.ore{transition:none}}
+
+.tabs{display:flex;gap:4px;padding:4px;background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.tab{border:0;background:none;padding:8px 18px;border-radius:5px;cursor:pointer;font-family:var(--disp);font-size:18px;line-height:1;color:var(--muted)}
+.tab.on{background:var(--spruce);color:var(--spruce-ink)}
+.tab:not(.on):hover{background:var(--surface);color:var(--ink)}
+[hidden]{display:none!important}
+#ipick{background:var(--spruce);color:var(--spruce-ink)}
+#ipick>summary{display:none}
+.isearch{display:block;max-width:560px;margin-bottom:4px}
+#itemList{display:grid;gap:12px}
+.itm{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.itm header{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.ih{flex:1;min-width:0}
+.ih h3{margin:0;font-size:18px;font-weight:700;line-height:1.3}
+.ih .en{font-size:12px;color:var(--muted)}
+.tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-size:12px;padding:2px 8px;border-radius:3px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+.tag.src{border-color:var(--x);background:var(--x-t);color:var(--ink)}
+.eff{margin:6px 0 0;font-size:14px;color:var(--ink)}
+.subs{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px;font-size:13px}
+.subs b{font-weight:600;margin-right:8px}
+.subs span{color:var(--muted)}
+.routes{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.routes>summary{display:flex;flex-wrap:wrap;gap:6px;align-items:center;cursor:pointer;list-style:none}
+.routes>summary::-webkit-details-marker{display:none}
+.sum-l{font-weight:600;font-size:13px;color:var(--focus)}
+.sum-l::before{content:"▸ ";}
+.routes[open] .sum-l::before{content:"▾ ";}
+.mchip{font-size:12px;padding:1px 7px;border-radius:999px;background:color-mix(in srgb,var(--spruce) 12%,transparent);color:var(--ink)}
+.rg{margin-top:12px}
+.rg h4{margin:0 0 6px;font-size:14px}
+.rg h4 small{margin-left:6px;font-weight:400;color:var(--muted);font-size:12px}
+.recipe{display:grid;grid-template-columns:auto auto 1fr;grid-template-areas:"g a o" "l l l" "f f f";align-items:center;gap:6px 10px;padding:10px;margin-bottom:8px;background:var(--paper);border-radius:5px}
+.gridbox{grid-area:g;display:flex;flex-direction:column;gap:6px}
+.grid3{display:grid;grid-template-columns:repeat(3,28px);grid-auto-rows:28px;gap:3px}
+.gc{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:var(--surface);border:1px solid var(--line);border-radius:3px;color:var(--muted);font-variant-numeric:tabular-nums}
+.gc.on{background:var(--spruce-2);border-color:var(--spruce-2);color:var(--spruce-ink)}
+.seas{display:flex;gap:3px;align-items:center}
+.seas .gc{width:28px;height:28px}
+.sl2{font-size:11px;color:var(--muted);margin-right:4px}
+.arrow{grid-area:a;font-size:20px;color:var(--muted)}
+.recipe .outp{grid-area:o}
+.outp{font-weight:700}
+.legend{grid-area:l;margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px}
+.legend b{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;margin-right:4px;border-radius:3px;background:var(--spruce-2);color:var(--spruce-ink);font-size:11px}
+.free{grid-area:f;margin:0;font-size:12px;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 10px;background:var(--paper);border-radius:5px;margin-bottom:6px}
+.chip{font-size:13px;padding:2px 8px;border-radius:3px;background:var(--surface);border:1px solid var(--line)}
+.plus{color:var(--muted)}
+.flow .arrow{font-size:16px}
+.sub2{margin:0 0 8px;font-size:12px;color:var(--muted)}
+.drops{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.drops li{display:flex;align-items:center;gap:6px;padding:3px 8px 3px 4px;border:1px solid var(--line);border-radius:4px;font-size:13px}
+.dp{border:0;background:none;padding:0;cursor:pointer;font-weight:600;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.dp:hover{text-decoration-color:var(--focus)}
+.dp .no{font-weight:400;color:var(--muted);font-size:11px;margin-right:4px;font-variant-numeric:tabular-nums}
+.dp .form{font-size:11px;font-weight:400;padding:0 4px;border:1px solid var(--line);border-radius:3px}
+.rate{font-variant-numeric:tabular-nums;color:var(--u);font-weight:600}
+.qty{color:var(--muted);font-size:12px}
+.ht{margin:0 0 6px;font-size:14px;line-height:1.6;max-width:75ch}
+.tw{overflow-x:auto}
+table.mini{min-width:0;width:auto;font-size:13px;border:1px solid var(--line);margin-bottom:6px}
+table.mini th,table.mini td{position:static;padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.more2{margin:8px 0 0;font-size:12px;color:var(--muted)}
+#iempty{padding:40px 16px;text-align:center;color:var(--muted)}
+@media (max-width:860px){
+ .tabs{order:2}
+ #ipick>summary{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;cursor:pointer;font-family:var(--disp);font-size:18px;list-style:none}
+ #ipick>summary::-webkit-details-marker{display:none}
+ #ipick>summary::after{content:"펼치기";font-family:var(--font);font-size:12px;color:var(--spruce-muted)}
+ #ipick[open]>summary::after{content:"접기"}
+ #itemView table.mini{display:table}
+ #itemView table.mini thead{display:table-header-group}
+ #itemView table.mini tbody tr{display:table-row;padding:0}
+ #itemView table.mini td{display:table-cell;padding:5px 8px;border-bottom:1px solid var(--line)}
+ .recipe{grid-template-columns:auto auto 1fr}
+}
 </style>
 </head>
 <body>
 <header class="top">
- <div class="brand"><h1>코블버스 출현 도감</h1><p></p></div>
+ <div class="brand"><h1>코블버스 도감</h1><p></p></div>
+ <div class="tabs" role="tablist" aria-label="도감 종류"><button type="button" class="tab on" role="tab" data-tab="poke" aria-selected="true">포켓몬</button><button type="button" class="tab" role="tab" data-tab="items" aria-selected="false">아이템</button></div>
  <label class="gen"><span>세대</span><select id="gen"><option value="0">(없음)</option><option value="1">1세대 관동</option><option value="2">2세대 성도</option><option value="3">3세대 호연</option><option value="4">4세대 신오</option><option value="5">5세대 하나</option><option value="6">6세대 칼로스</option><option value="7">7세대 알로라</option><option value="8">8세대 가라르</option><option value="9">9세대 팔데아</option></select></label>
  <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="이름, 초성, 번호로 검색 (예: ㅍㅋㅊ)" aria-label="포켓몬 검색" autocomplete="off"></label>
 </header>
-<div class="layout">
+<div class="layout" id="pokeView">
  <details id="pick" open><summary id="pickLabel">바이옴 고르기</summary>
   <nav class="side" aria-label="바이옴"><input id="bfilter" class="bf" type="search" placeholder="바이옴 찾기" aria-label="바이옴 찾기" autocomplete="off"><div id="biomes"></div></nav>
  </details>
@@ -172,6 +250,21 @@ dialog::backdrop{background:rgba(10,20,25,.55)}
    출현 데이터는 COBBLEVERSE 공식 위키(cobbleverse.wiki)의 세대별 스폰 페이지를 옮긴 거예요. 주황색 점선 표시는 잡을 수 있는 시점이나 장소에 제한이 있다는 뜻이에요. 일부 전설의 출현 시점은 LUMYVERSE 공식 사이트 안내를 따랐어요. 포켓몬, 바이옴, 구조물 이름은 한국어로 옮겼고 영어 원래 이름을 같이 적었어요.
    "오버월드 어디서나" 항목은 특정 바이옴을 골라도 함께 보여요. 위키에 "숲 계열 제외"처럼 묶음으로 적힌 제외 조건은 표에 그대로 적어 두었으니 직접 확인해 주세요.
    등급 버튼의 숫자는 config의 best-spawner-config.json 가중치예요.
+  </footer>
+ </main>
+</div>
+<div class="layout" id="itemView" hidden>
+ <details id="ipick" open><summary>분류 고르기</summary>
+  <nav class="side" aria-label="아이템 분류"><div id="icats"></div></nav>
+ </details>
+ <main>
+  <label class="search isearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="iq" type="search" placeholder="아이템이나 재료 이름, 초성으로 검색 (예: 먹다남은음식, 철 주괴)" aria-label="아이템 검색" autocomplete="off"></label>
+  <div class="bar"><span id="istatus"></span><button type="button" id="iclear" class="link">전체 초기화</button></div>
+  <p class="hint">"얻는 방법"을 누르면 제작법, 요리법, 드롭하는 포켓몬 같은 획득 경로가 펼쳐져요. 제작 칸의 숫자는 아래 재료 목록 번호예요. 드롭 포켓몬 이름을 누르면 종족값을 볼 수 있어요.</p>
+  <div id="itemList"></div>
+  <footer>
+   일반 아이템의 획득 경로는 코블몬 공식 위키(wiki.cobblemon.com)의 아이템 문서를 옮겼고, 아이템 이름과 효과 설명은 코블몬·Mega Showdown 게임 안 한국어 번역을 따랐어요. 코블버스 전용 아이템과 관장 소환 아이템은 LUMYVERSE 공식 사이트(lumyverse.com) 안내를 옮겼어요.
+   코블몬 위키는 최신 코블몬 기준이라, 코블버스에 들어 있는 코블몬 버전이나 모드팩 설정에 따라 실제 게임과 다를 수 있어요.
   </footer>
  </main>
 </div>
