@@ -10,13 +10,15 @@ const dex=new Set(P.map(p=>p.d));
 GENS.forEach(([a,b],i)=>{const have=[...dex].filter(d=>d>=a&&d<=b).length;if(have===0)return;const miss=[];for(let d=a;d<=b;d++)if(!dex.has(d))miss.push(d);
  console.log(`${i+1}세대: ${have}/${b-a+1}종`+(miss.length?` (위키에 없음 또는 빠짐: ${miss.join(",")})`:""));});
 const bmap={};CATS.forEach(([c,o])=>Object.keys(o).forEach(k=>bmap[k]=c));
-P.forEach(p=>{ if(!p.ko||/[A-Za-z]/.test(p.ko))bad(`${p.d} ${p.en}: 한국어 이름이 없거나 영어가 섞임`);
+// 예외: 공식 한국어 이름에 라틴 문자가 들어간 경우(폴리곤Z), 위키에 장소 없이 "Breeding Only"만 적힌 카드(피오네)
+const KO_LATIN_OK=new Set(["폴리곤Z"]);
+P.forEach(p=>{ if(!p.ko||(/[A-Za-z]/.test(p.ko)&&!KO_LATIN_OK.has(p.ko)))bad(`${p.d} ${p.en}: 한국어 이름이 없거나 영어가 섞임`);
  if(!BASE[p.d])bad(`${p.d} ${p.en}: 종족값 없음`);
  p.entries.forEach(e=>{ if(!"CURX".includes(e.r)||e.r.length!==1)bad(`${p.d} 희귀도 코드 ${e.r}`);
   if(e.c.some(x=>x===undefined))bad(`${p.d} ${p.en}: 조건 키가 K에 없음`);
   (e.b||[]).forEach(b=>{if(!bmap[b])bad(`바이옴 번역 없음: ${b}`)});
   (e.s||[]).forEach(s=>{if(!STRUCT_KO[s])bad(`구조물 번역 없음: ${s}`)});
-  if(!e.b&&!e.s&&!e.all)bad(`${p.d} ${p.en}: 장소가 비어 있음`);});});
+  if(!e.b&&!e.s&&!e.all&&!e.c.includes("교배로만 얻음"))bad(`${p.d} ${p.en}: 장소가 비어 있음`);});});
 Object.entries(BASE).forEach(([d,s])=>{if(s.length!==6||s.some(isNaN))bad(`종족값 형식 ${d}`)});
 Object.entries(MEGA).forEach(([d,ms])=>ms.forEach(([n,s])=>{if(!BASE[d])return bad(`${n}: 기본 종족값 없음`);const t=s.reduce((a,b)=>a+b),b=BASE[d].reduce((a,c)=>a+c);if(t-b!==100)console.log(`확인 필요: ${n} 합계 차이 ${t-b} (보통 +100)`)}));
 console.log(err?`\n오류 ${err}개`:"\n검사 통과");process.exit(err?1:0);
