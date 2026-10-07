@@ -60,3 +60,11 @@ Claude Code가 작업하면서 확실하지 않은 번역, 종족값, 위키 표
 - 801 마기아나 "Original" → `500년 전의 색`으로 옮겼어요. 공식 한국어 폼 이름을 확신하지 못해요(종족값은 같아요).
 - 새 조건: `Dusk` → "해 질 녘", `Light: 0-7` → "밝기 0–7", `Min Y: 190` → "Y 190 이상", `Iron Block` → "철 블록 근처", `Lava`(근처 블록) → "용암 근처". 새 묶음: Spooky Biomes 으스스한 계열. 구조물(바닐라): Shipwreck 난파선.
 - 7세대에는 원작 메가진화가 없어요(모단단게·갑주무사·할비롱·마기아나·제라오라는 Legends Z-A 신규라 넣지 않았어요).
+
+## 8세대
+- 위키에 없음: 880 파치래곤, 881 파치르돈, 882 어래곤, 883 어치르돈(화석 포켓몬). gen8 페이지 원본 HTML에 카드가 없어요. `STAT_RAW`에는 번호가 밀리지 않도록 종족값이 들어 있어요.
+- 폼 이름: 데인차·포트데스 위작폼/진작폼(공식, 종족값 같음). 901 다투곰 "Bloodmoon"은 `붉은달`로 옮겼고 종족값이 달라 `FORM_STATS["901|붉은달"]`에 넣었어요. 공식 폼 표기(예: "붉은 달의 모습")와 다를 수 있어요.
+- 894 레지에레키, 895 레지드래고: LUMYVERSE 가이드에서는 "Legendary Titans"(호연 데이터팩, 성도 챔피언 격파 후 열림) 항목에 들어 있어요. 그런데 위키 구조물 이름은 `Split Decision Temple (Sinnoh)`이라 신오 쪽으로 보여요. 둘이 맞지 않아서 `UNLOCK`은 넣지 않았어요.
+- 확신이 없는 구조물 번역: `Split Decision Temple (Sinnoh)` → "결단의 신전 (신오)", `Crown Cemetery` → "크라운 묘지"(기존 Crown Spire "크라운 첨탑"에 맞춤), `Stonjourner Henge Ruins` → "돌헨진 헨지 유적", `Eternatus Cocoon (End)` → "무한다이노 고치 (엔드)". 바닐라: Bastion Remnant 보루 잔해, Nether Fortress 네더 요새.
+- 근처 블록 `Coal Ore`(단수)는 3세대 `Coal Ores`와 같은 "석탄 광석 근처"로 묶었어요. `Berries` → "열매 근처", `Kelp Plant, Seagrass` → "켈프/해초 근처".
+- 8세대에는 원작 메가진화가 없어요(대여르 메가는 Legends Z-A 신규).
