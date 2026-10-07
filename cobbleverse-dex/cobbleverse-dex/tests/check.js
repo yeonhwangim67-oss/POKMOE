@@ -2,8 +2,8 @@
 const fs=require("fs"),path=require("path"),vm=require("vm");
 const src=path.join(__dirname,"..","src");
 const gens=fs.readdirSync(src).filter(f=>/^data_gen\d+\.js$/.test(f)).sort((a,b)=>+a.match(/\d+/)[0]-+b.match(/\d+/)[0]);
-const code=["data_core.js",...gens,"i18n.js","stats.js","items.js"].map(f=>fs.readFileSync(path.join(src,f),"utf8")).join("\n")+"\n;({P,UNLOCK,CATS,STRUCT_KO,BASE,FORM_STATS,MEGA,ITEMS})";
-const {P,CATS,STRUCT_KO,BASE,MEGA,ITEMS}=vm.runInNewContext(code,{console});
+const code=["data_core.js",...gens,"i18n.js","stats.js","items.js","poke_extra.js"].map(f=>fs.readFileSync(path.join(src,f),"utf8")).join("\n")+"\n;({P,UNLOCK,CATS,STRUCT_KO,BASE,FORM_STATS,MEGA,ITEMS,PEX,PEX_FORM,ABIL})";
+const {P,CATS,STRUCT_KO,BASE,MEGA,ITEMS,PEX,PEX_FORM,ABIL}=vm.runInNewContext(code,{console});
 let err=0;const bad=m=>{err++;console.log("오류:",m);};
 const GENS=[[1,151],[152,251],[252,386],[387,493],[494,649],[650,721],[722,809],[810,905],[906,1025]];
 const dex=new Set(P.map(p=>p.d));
@@ -29,5 +29,8 @@ ITEMS.forEach(it=>{const s=JSON.stringify([it.ko,it.subs.map(x=>[x[1],x[2]]),it.
  if(!ICATS.has(it.cat))bad(`아이템 ${it.en}: 분류 ${it.cat}`);
  if(!it.how.length)bad(`아이템 ${it.en}: 획득 경로 없음`);
  it.how.filter(h=>h.m==="drop").forEach(h=>h.rows.forEach(r=>{if(!dex.has(r[0])&&!BASE[r[0]])bad(`아이템 ${it.en}: 드롭 포켓몬 번호 ${r[0]}`)}));});
+// 특성·드롭 검사
+for(let d=1;d<=1025;d++)if(!PEX[d])bad(`${d}: 특성·드롭 데이터 없음`);
+Object.values({...PEX,...PEX_FORM}).forEach(x=>{[...x.a,x.h].filter(Boolean).forEach(a=>{if(!ABIL[a]||/^\?/.test(ABIL[a][0]))bad(`특성 번역 없음: ${a}`)});(x.d||[]).forEach(r=>{if(/^\?/.test(r[0]))bad(`드롭 아이템 번역 없음: ${r[0]}`)});});
 console.log(`아이템: ${ITEMS.length}개`);
 console.log(err?`\n오류 ${err}개`:"\n검사 통과");process.exit(err?1:0);

@@ -11,6 +11,7 @@
    - 종족값: 원작 게임 기준(최신 세대 값)을 쓴다.
    - 출현 시점 안내(`UNLOCK`): LUMYVERSE 공식 사이트(lumyverse.com)에 적힌 경우만 넣고, 주석에 출처를 적는다.
    - 아이템 도감(`items.js`)은 별도 출처를 쓴다(아래 "아이템 도감" 참고).
+   - 특성·드롭 아이템(`poke_extra.js`): 코블버스 모드팩에 들어 있는 코블몬 1.7.3 종족 데이터 + Mega Showdown이 덮어쓴 종족. 이름·설명은 게임 한국어 번역.
 3. 위키 카드 하나를 `e(...)` 항목 하나로 옮긴다. 카드를 합치거나 빼지 않는다. 바이옴 목록은 위키에 적힌 그대로 옮기고, 비슷하다고 다른 목록으로 대충 바꾸지 않는다.
 4. UI와 디자인(`shell.html`, `app.js`, `items_app.js`)은 요청이 없으면 바꾸지 않는다. 데이터 파일만 늘린다.
 5. 확실하지 않은 것(번역, 종족값, 위키 표기 이상 등)은 지어내지 말고 `NOTES.md`에 목록으로 남긴다.
@@ -22,6 +23,7 @@
 - `src/i18n.js`: `CATS`(바이옴 한국어 이름과 분류), `STRUCT_KO`(구조물 한국어 이름).
 - `src/stats.js`: `STAT_RAW`(도감 번호 순 종족값), `FORM_STATS`(리전폼), `MEGA`(메가진화).
 - `src/items.js`: 아이템 도감 데이터 `ITEMS`.
+- `src/poke_extra.js`: 특성 사전 `ABIL`, 포켓몬별 특성·드롭 `PEX`, 폼별 `PEX_FORM`. 종족값 창에 함께 표시된다(`src/poke_extra_app.js`).
 - `src/app.js`(포켓몬 화면), `src/items_app.js`(아이템 화면), `src/shell.html`: 화면. 요청이 없으면 건드리지 않는다.
 - `tests/check.js`: 데이터 검사. `build.py`: 빌드.
 

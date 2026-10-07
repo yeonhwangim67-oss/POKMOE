@@ -61,7 +61,7 @@ add(62,"강챙이","Poliwrath",null,[e("C","34-51",["rain","sky"],B(SWAMP)),e("C
 add(72,"왕눈해","Tentacool",null,[e("C","9-28",["surf","seeSky"],B(OCEAN)),e("C","9-28",["sub","sky"],B(OCEAN))]);
 add(73,"독파리","Tentacruel",null,[e("C","30-52",["surf","sky"],B(OCEAN)),e("C","30-52",["sub","seeSky"],B(OCEAN))]);
 [[74,"꼬마돌","Geodude","5-30"],[75,"데구리","Graveler","25-39"],[76,"딱구리","Golem","34-50"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("C",l,["sky"],B(GEO)),e("C",l,["dim"],OW(["Deep Dark"]))]);add(d,k,n,"알로라",[e("C",l,["iron"],OW())]);});
-[[77,"포니타","Ponyta","16-41"],[78,"날쌩마","Rapidash","40-50"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("U",l,["clear","sky","n025"],B(RAT)),e("C",l,[],B(["Nether Wastes"]))]);add(d,k,n,"가라르",[e("U",l,["sky","n025"],B([...FLOWER,...MYST]))]);});
+[[77,"포니타","Ponyta","16-41"],[78,"날쌩마","Rapidash","40-50"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("U",l,["clear","sky","n025"],B(RAT.filter(b=>b!=="Sunflower Plains"))),e("C",l,[],B(["Nether Wastes"]))]);add(d,k,n,"가라르",[e("U",l,["sky","n025"],B([...FLOWER,...MYST]))]);});
 add(79,"야돈","Slowpoke",null,[e("C","7-32",["sky"],B(["Beach","Snowy Beach"])),e("C","7-32",["sky"],B(["River","Warm River"]))]);
 add(79,"야돈","Slowpoke","가라르",[e("C","7-32",["sky","water"],B(["Mushroom Fields"]))]);
 add(80,"야도란","Slowbro",null,[e("C","37-49",["sky"],B(["Beach","Snowy Beach"]))]);
