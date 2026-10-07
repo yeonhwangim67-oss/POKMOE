@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>코블버스 출현 도감</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#EEF3F4;--surface:#FFFFFF;--ink:#1C2730;--muted:#5A6A75;--line:#D3DDE2;
+ --spruce:#1E4A42;--spruce-2:#28594F;--spruce-ink:#E4EFEB;--spruce-muted:#A9C5BC;--focus:#2B5DB8;
+ --c:#7B848B;--c-t:#E7EAEC;--u:#2B5DB8;--u-t:#DFE8F8;--r:#8A4BC4;--r-t:#EEE3F8;--x:#B9820F;--x-t:#FAF0D6;
+ --font:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--disp:"Do Hyeon","IBM Plex Sans KR","Malgun Gothic",sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#141C21;--surface:#1B252B;--ink:#E3EAEE;--muted:#9AA9B2;--line:#2C3A42;--spruce:#10302B;--spruce-2:#1A3F38;--spruce-ink:#DDEAE6;--spruce-muted:#8FB0A6;--focus:#7FA6EE;--c:#A0A8AE;--c-t:#2A3339;--u:#6E9AE8;--u-t:#1E2D47;--r:#B98AE6;--r-t:#2F2440;--x:#E5B54A;--x-t:#3A2F14;}}
+:root[data-theme="dark"]{--paper:#141C21;--surface:#1B252B;--ink:#E3EAEE;--muted:#9AA9B2;--line:#2C3A42;--spruce:#10302B;--spruce-2:#1A3F38;--spruce-ink:#DDEAE6;--spruce-muted:#8FB0A6;--focus:#7FA6EE;--c:#A0A8AE;--c-t:#2A3339;--u:#6E9AE8;--u-t:#1E2D47;--r:#B98AE6;--r-t:#2F2440;--x:#E5B54A;--x-t:#3A2F14;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;word-break:keep-all;overflow-wrap:anywhere;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.top{display:flex;align-items:center;gap:16px;padding:14px 22px;background:var(--surface);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{margin-right:auto;min-width:0}
+.brand h1{font-family:var(--disp);font-weight:400;font-size:30px;line-height:1.1;margin:0;letter-spacing:.01em}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.search{position:relative;flex:0 1 300px;min-width:200px}
+.search input{width:100%;padding:10px 14px 10px 38px;border:2px solid var(--line);border-radius:6px;background:var(--paper)}
+.search input:focus{border-color:var(--focus);outline:none}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:calc(100vh - 70px)}
+#pick{background:var(--spruce);color:var(--spruce-ink)}
+#pick>summary{display:none}
+.side{position:sticky;top:0;max-height:100vh;overflow:auto;padding:16px 12px 24px}
+.side .bf{width:100%;padding:8px 10px;border-radius:5px;border:1px solid var(--spruce-2);background:var(--spruce-2);color:var(--spruce-ink);margin-bottom:6px}
+.side .bf::placeholder{color:var(--spruce-muted)}
+.side section{margin-top:14px}
+.side h3{font-family:var(--disp);font-weight:400;font-size:17px;margin:0 6px 4px;color:var(--spruce-muted)}
+.loc{display:grid;grid-template-columns:1fr auto;column-gap:8px;width:100%;text-align:left;padding:5px 8px;border:0;border-radius:4px;background:none;cursor:pointer}
+.loc .lk{font-size:14px}
+.loc em{font-style:normal;font-size:12px;color:var(--spruce-muted);font-variant-numeric:tabular-nums;align-self:center}
+.loc small{grid-column:1/-1;font-size:11px;line-height:1.3;color:var(--spruce-muted)}
+.loc:hover{background:var(--spruce-2)}
+.loc.on{background:var(--spruce-ink);color:var(--spruce)}
+.loc.on small,.loc.on em{color:var(--spruce)}
+.none{color:var(--spruce-muted);font-size:13px;padding:6px}
+main{padding:20px 22px 40px;min-width:0}
+.ores{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
+.ore{--o:var(--c);position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;width:132px;height:76px;padding:8px 10px;border:0;cursor:pointer;color:#fff;font-family:var(--disp);font-size:19px;line-height:1.05;text-align:left;
+ background:var(--o);box-shadow:inset 4px 4px 0 rgba(255,255,255,.28),inset -4px -4px 0 rgba(0,0,0,.28);transition:transform .08s}
+.ore::before{content:"";position:absolute;inset:10px 12px auto auto;width:22px;height:22px;opacity:.55;
+ background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9) 0 3px,transparent 4px),radial-gradient(circle at 75% 60%,rgba(255,255,255,.7) 0 2px,transparent 3px),radial-gradient(circle at 40% 85%,rgba(0,0,0,.35) 0 3px,transparent 4px)}
+.ore small{font-family:var(--font);font-size:11px;opacity:.9}
+.ore[data-r="C"]{--o:var(--c)}.ore[data-r="U"]{--o:var(--u)}.ore[data-r="R"]{--o:var(--r)}.ore[data-r="X"]{--o:var(--x)}
+.ore:not(.on){filter:saturate(.55) brightness(1.02);opacity:.78}
+.ore.on{box-shadow:inset -4px -4px 0 rgba(255,255,255,.22),inset 4px 4px 0 rgba(0,0,0,.32),0 0 0 3px var(--ink);transform:translateY(1px);opacity:1;filter:none}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 0 10px}
+#status{font-weight:600}
+.link{border:1px solid var(--line);background:var(--surface);border-radius:5px;padding:4px 10px;cursor:pointer;font-size:13px}
+.hint{color:var(--muted);font-size:13px;margin:0 0 10px}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:720px}
+thead th{position:sticky;top:0;background:var(--surface);text-align:left;font-weight:600;font-size:13px;color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--line);z-index:1}
+tbody td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+.c-no{font-variant-numeric:tabular-nums;color:var(--muted);width:64px}
+.c-name{width:170px}
+.c-name .ko{display:block;font-weight:600;font-size:16px}
+.c-name .form{display:inline-block;margin-top:2px;font-size:12px;padding:1px 6px;border-radius:3px;background:var(--paper);border:1px solid var(--line)}
+.c-name .en{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.c-rar{width:120px}
+.badge{display:inline-block;margin:0 4px 4px 0;padding:2px 8px;border-radius:3px;font-size:12px;font-weight:600;border-left:4px solid}
+.badge.r-c{background:var(--c-t);border-color:var(--c)}.badge.r-u{background:var(--u-t);border-color:var(--u)}.badge.r-r{background:var(--r-t);border-color:var(--r)}.badge.r-x{background:var(--x-t);border-color:var(--x)}
+.c-spawn ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.ent{display:flex;gap:10px}
+.dot{flex:none;width:10px;height:10px;margin-top:6px;box-shadow:inset 2px 2px 0 rgba(255,255,255,.35),inset -2px -2px 0 rgba(0,0,0,.25)}
+.dot.r-c{background:var(--c)}.dot.r-u{background:var(--u)}.dot.r-r{background:var(--r)}.dot.r-x{background:var(--x)}
+.ent-top{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.ent-top b{font-variant-numeric:tabular-nums;margin-right:2px}
+.cond{font-size:12px;padding:1px 6px;border-radius:3px;background:var(--paper);color:var(--muted)}
+.places{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;align-items:baseline}
+.pl{font-size:13px;padding:1px 7px;border:1px solid var(--line);border-radius:3px}
+.pl.all{border-style:dashed}
+.pl.st{border-color:var(--spruce-2);background:color-mix(in srgb,var(--spruce) 10%,transparent)}
+.ex{color:var(--muted);font-size:12px}
+.more{display:contents}
+.more summary{cursor:pointer;font-size:12px;color:var(--focus);list-style:none;padding:1px 4px}
+.more summary::-webkit-details-marker{display:none}
+.more[open] summary{display:none}
+#empty{padding:40px 16px;text-align:center;color:var(--muted)}
+footer{color:var(--muted);font-size:12px;margin-top:16px;line-height:1.6;max-width:72ch}
+footer a{color:inherit}
+.gen{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.gen select{padding:9px 30px 9px 12px;border:2px solid var(--line);border-radius:6px;background:var(--paper);font-weight:600;color:var(--ink);cursor:pointer}
+.gen select:focus{border-color:var(--focus);outline:none}
+.nm{display:block;border:0;background:none;padding:0;text-align:left;cursor:pointer}
+.nm .ko{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px;text-decoration-thickness:2px}
+.nm:hover .ko{text-decoration-color:var(--focus)}
+.note{display:inline-block;margin:6px 4px 0 0;font-size:12px;padding:2px 7px;border-radius:3px;background:var(--x-t);color:var(--ink);border:1px dashed var(--x)}
+dialog{border:0;padding:0;border-radius:10px;width:min(520px,calc(100vw - 24px));background:var(--surface);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,20,25,.55)}
+.dh{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+.dh .t{flex:1;min-width:0}
+#dNo{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+#dTitle{font-family:var(--disp);font-weight:400;font-size:28px;margin:2px 0;line-height:1.15}
+#dSub .form{display:inline-block;font-size:12px;padding:1px 6px;border-radius:3px;background:var(--paper);border:1px solid var(--line);margin-right:6px}
+#dSub .en{font-size:12px;color:var(--muted)}
+#closeDlg{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:13px}
+.db{padding:14px 20px 20px}
+#dRar{margin-bottom:14px}
+.shead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.shead h3{margin:0;font-size:14px}
+#megaKey{display:flex;align-items:center;gap:8px;border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:4px 12px 4px 4px;cursor:pointer;font-size:13px;font-weight:600}
+#megaKey svg{width:30px;height:30px;filter:grayscale(1) brightness(1.05);transition:filter .25s,transform .25s}
+#megaKey.on{border-color:#C2408A}
+#megaKey.on svg{filter:none;transform:rotate(-12deg) scale(1.06)}
+#megaKey:disabled{cursor:not-allowed;opacity:.55}
+.srow{display:grid;grid-template-columns:64px 64px 1fr;align-items:center;gap:8px;padding:5px 0}
+.sl{font-size:13px;color:var(--muted)}
+.sv{font-weight:600;font-variant-numeric:tabular-nums}
+.sv em{font-style:normal;font-size:11px;margin-left:4px}
+.sv em.up{color:#1E8A55}.sv em.dn{color:#C2413A}
+.track{height:14px;background:var(--paper);border-radius:2px;overflow:hidden}
+.fill{display:block;height:100%;background:var(--spruce-2);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);transition:width .35s ease}
+#stats.mega .fill{background:linear-gradient(90deg,#C2408A,#E9A23B)}
+.srow.total{border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
+.dfoot{font-size:12px;color:var(--muted);margin-top:12px}
+@media (prefers-reduced-motion:reduce){#megaKey svg,.fill{transition:none}}
+@media (max-width:860px){.gen{order:3;flex:1 1 auto}.gen select{flex:1}}
+@media (max-width:860px){
+ .layout{grid-template-columns:1fr}
+ #pick>summary{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;cursor:pointer;font-family:var(--disp);font-size:18px;list-style:none}
+ #pick>summary::-webkit-details-marker{display:none}
+ #pick>summary::after{content:"펼치기";font-family:var(--font);font-size:12px;color:var(--spruce-muted)}
+ #pick[open]>summary::after{content:"접기"}
+ .side{position:static;max-height:60vh;padding-top:0}
+ .search{flex:1 1 100%}
+ main{padding:16px 12px 32px}
+ .ore{width:calc(50% - 5px);height:64px}
+ table{min-width:0}
+ thead{display:none}
+ tbody tr{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;padding:12px;border-bottom:1px solid var(--line)}
+ tbody td{border:0;padding:0}
+ .c-no{width:auto;grid-row:1}.c-name{width:auto}.c-rar{grid-column:1/-1;width:auto}.c-spawn{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.ore{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand"><h1>코블버스 출현 도감</h1><p></p></div>
+ <label class="gen"><span>세대</span><select id="gen"><option value="0">(없음)</option><option value="1">1세대 관동</option><option value="2">2세대 성도</option><option value="3">3세대 호연</option><option value="4">4세대 신오</option><option value="5">5세대 하나</option><option value="6">6세대 칼로스</option><option value="7">7세대 알로라</option><option value="8">8세대 가라르</option><option value="9">9세대 팔데아</option></select></label>
+ <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="이름, 초성, 번호로 검색 (예: ㅍㅋㅊ)" aria-label="포켓몬 검색" autocomplete="off"></label>
+</header>
+<div class="layout">
+ <details id="pick" open><summary id="pickLabel">바이옴 고르기</summary>
+  <nav class="side" aria-label="바이옴"><input id="bfilter" class="bf" type="search" placeholder="바이옴 찾기" aria-label="바이옴 찾기" autocomplete="off"><div id="biomes"></div></nav>
+ </details>
+ <main>
+  <div class="ores" role="group" aria-label="희귀도">
+   <button type="button" class="ore" data-r="C" aria-pressed="false">흔함<small>88.5</small></button>
+   <button type="button" class="ore" data-r="U" aria-pressed="false">드묾<small>10</small></button>
+   <button type="button" class="ore" data-r="R" aria-pressed="false">레어<small>1.2</small></button>
+   <button type="button" class="ore" data-r="X" aria-pressed="false">울트라 레어<small>0.3</small></button>
+  </div>
+  <div class="bar"><span id="status"></span><button type="button" id="clearLoc" class="link" hidden>바이옴 선택 해제</button><button type="button" id="clearAll" class="link">전체 초기화</button></div>
+  <p class="hint">바이옴과 등급을 같이 고르면 그 바이옴에서 그 등급으로 나오는 포켓몬만 보여요. 등급은 여러 개를 같이 고를 수 있어요.</p>
+  <div class="tablewrap"><table><thead><tr><th scope="col">번호</th><th scope="col">포켓몬</th><th scope="col">등급</th><th scope="col">출현 정보</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" hidden>조건에 맞는 포켓몬이 없어요. 등급이나 바이옴 선택을 줄여 보세요.</div></div>
+  <footer>
+   출현 데이터는 COBBLEVERSE 공식 위키(cobbleverse.wiki)의 세대별 스폰 페이지를 옮긴 거예요. 주황색 점선 표시는 잡을 수 있는 시점이나 장소에 제한이 있다는 뜻이에요. 일부 전설의 출현 시점은 LUMYVERSE 공식 사이트 안내를 따랐어요. 포켓몬, 바이옴, 구조물 이름은 한국어로 옮겼고 영어 원래 이름을 같이 적었어요.
+   "오버월드 어디서나" 항목은 특정 바이옴을 골라도 함께 보여요. 위키에 "숲 계열 제외"처럼 묶음으로 적힌 제외 조건은 표에 그대로 적어 두었으니 직접 확인해 주세요.
+   등급 버튼의 숫자는 config의 best-spawner-config.json 가중치예요.
+  </footer>
+ </main>
+</div>
+<dialog id="dlg" aria-labelledby="dTitle">
+ <div class="dh"><div class="t"><div id="dNo"></div><h2 id="dTitle"></h2><div id="dSub"></div></div><button type="button" id="closeDlg">닫기</button></div>
+ <div class="db">
+  <div id="dRar"></div>
+  <div class="shead"><h3>종족값</h3><button type="button" id="megaKey" aria-pressed="false"><svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7C2DD"/><stop offset=".5" stop-color="#C2408A"/><stop offset="1" stop-color="#E9A23B"/></linearGradient></defs><circle cx="20" cy="20" r="18" fill="#2A2F36"/><polygon points="20,6 31,13 31,27 20,34 9,27 9,13" fill="url(#gg)"/><polygon points="20,6 31,13 20,18 9,13" fill="#fff" opacity=".45"/><polygon points="20,18 31,13 31,27 20,34" fill="#000" opacity=".18"/><polygon points="15,11 19,9 17,14" fill="#fff" opacity=".85"/></svg><span id="megaLabel">메가진화</span></button></div>
+  <div id="stats"></div>
+  <p class="dfoot">종족값은 원작 게임 기준이에요. 공식 위키에는 종족값이 없어서 따로 넣었어요. 보석 버튼을 누르면 메가진화 종족값으로 바뀌고, 메가진화가 두 가지인 포켓몬은 누를 때마다 차례로 바뀌어요.</p>
+ </div>
+</dialog>
+<script>
+/*DATA*/
+</script>
+</body>
+</html>

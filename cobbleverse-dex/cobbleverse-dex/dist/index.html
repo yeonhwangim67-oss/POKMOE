@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>코블버스 출현 도감</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#EEF3F4;--surface:#FFFFFF;--ink:#1C2730;--muted:#5A6A75;--line:#D3DDE2;
+ --spruce:#1E4A42;--spruce-2:#28594F;--spruce-ink:#E4EFEB;--spruce-muted:#A9C5BC;--focus:#2B5DB8;
+ --c:#7B848B;--c-t:#E7EAEC;--u:#2B5DB8;--u-t:#DFE8F8;--r:#8A4BC4;--r-t:#EEE3F8;--x:#B9820F;--x-t:#FAF0D6;
+ --font:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--disp:"Do Hyeon","IBM Plex Sans KR","Malgun Gothic",sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#141C21;--surface:#1B252B;--ink:#E3EAEE;--muted:#9AA9B2;--line:#2C3A42;--spruce:#10302B;--spruce-2:#1A3F38;--spruce-ink:#DDEAE6;--spruce-muted:#8FB0A6;--focus:#7FA6EE;--c:#A0A8AE;--c-t:#2A3339;--u:#6E9AE8;--u-t:#1E2D47;--r:#B98AE6;--r-t:#2F2440;--x:#E5B54A;--x-t:#3A2F14;}}
+:root[data-theme="dark"]{--paper:#141C21;--surface:#1B252B;--ink:#E3EAEE;--muted:#9AA9B2;--line:#2C3A42;--spruce:#10302B;--spruce-2:#1A3F38;--spruce-ink:#DDEAE6;--spruce-muted:#8FB0A6;--focus:#7FA6EE;--c:#A0A8AE;--c-t:#2A3339;--u:#6E9AE8;--u-t:#1E2D47;--r:#B98AE6;--r-t:#2F2440;--x:#E5B54A;--x-t:#3A2F14;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;word-break:keep-all;overflow-wrap:anywhere;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.top{display:flex;align-items:center;gap:16px;padding:14px 22px;background:var(--surface);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{margin-right:auto;min-width:0}
+.brand h1{font-family:var(--disp);font-weight:400;font-size:30px;line-height:1.1;margin:0;letter-spacing:.01em}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.search{position:relative;flex:0 1 300px;min-width:200px}
+.search input{width:100%;padding:10px 14px 10px 38px;border:2px solid var(--line);border-radius:6px;background:var(--paper)}
+.search input:focus{border-color:var(--focus);outline:none}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:calc(100vh - 70px)}
+#pick{background:var(--spruce);color:var(--spruce-ink)}
+#pick>summary{display:none}
+.side{position:sticky;top:0;max-height:100vh;overflow:auto;padding:16px 12px 24px}
+.side .bf{width:100%;padding:8px 10px;border-radius:5px;border:1px solid var(--spruce-2);background:var(--spruce-2);color:var(--spruce-ink);margin-bottom:6px}
+.side .bf::placeholder{color:var(--spruce-muted)}
+.side section{margin-top:14px}
+.side h3{font-family:var(--disp);font-weight:400;font-size:17px;margin:0 6px 4px;color:var(--spruce-muted)}
+.loc{display:grid;grid-template-columns:1fr auto;column-gap:8px;width:100%;text-align:left;padding:5px 8px;border:0;border-radius:4px;background:none;cursor:pointer}
+.loc .lk{font-size:14px}
+.loc em{font-style:normal;font-size:12px;color:var(--spruce-muted);font-variant-numeric:tabular-nums;align-self:center}
+.loc small{grid-column:1/-1;font-size:11px;line-height:1.3;color:var(--spruce-muted)}
+.loc:hover{background:var(--spruce-2)}
+.loc.on{background:var(--spruce-ink);color:var(--spruce)}
+.loc.on small,.loc.on em{color:var(--spruce)}
+.none{color:var(--spruce-muted);font-size:13px;padding:6px}
+main{padding:20px 22px 40px;min-width:0}
+.ores{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
+.ore{--o:var(--c);position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;width:132px;height:76px;padding:8px 10px;border:0;cursor:pointer;color:#fff;font-family:var(--disp);font-size:19px;line-height:1.05;text-align:left;
+ background:var(--o);box-shadow:inset 4px 4px 0 rgba(255,255,255,.28),inset -4px -4px 0 rgba(0,0,0,.28);transition:transform .08s}
+.ore::before{content:"";position:absolute;inset:10px 12px auto auto;width:22px;height:22px;opacity:.55;
+ background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9) 0 3px,transparent 4px),radial-gradient(circle at 75% 60%,rgba(255,255,255,.7) 0 2px,transparent 3px),radial-gradient(circle at 40% 85%,rgba(0,0,0,.35) 0 3px,transparent 4px)}
+.ore small{font-family:var(--font);font-size:11px;opacity:.9}
+.ore[data-r="C"]{--o:var(--c)}.ore[data-r="U"]{--o:var(--u)}.ore[data-r="R"]{--o:var(--r)}.ore[data-r="X"]{--o:var(--x)}
+.ore:not(.on){filter:saturate(.55) brightness(1.02);opacity:.78}
+.ore.on{box-shadow:inset -4px -4px 0 rgba(255,255,255,.22),inset 4px 4px 0 rgba(0,0,0,.32),0 0 0 3px var(--ink);transform:translateY(1px);opacity:1;filter:none}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 0 10px}
+#status{font-weight:600}
+.link{border:1px solid var(--line);background:var(--surface);border-radius:5px;padding:4px 10px;cursor:pointer;font-size:13px}
+.hint{color:var(--muted);font-size:13px;margin:0 0 10px}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:720px}
+thead th{position:sticky;top:0;background:var(--surface);text-align:left;font-weight:600;font-size:13px;color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--line);z-index:1}
+tbody td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+.c-no{font-variant-numeric:tabular-nums;color:var(--muted);width:64px}
+.c-name{width:170px}
+.c-name .ko{display:block;font-weight:600;font-size:16px}
+.c-name .form{display:inline-block;margin-top:2px;font-size:12px;padding:1px 6px;border-radius:3px;background:var(--paper);border:1px solid var(--line)}
+.c-name .en{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.c-rar{width:120px}
+.badge{display:inline-block;margin:0 4px 4px 0;padding:2px 8px;border-radius:3px;font-size:12px;font-weight:600;border-left:4px solid}
+.badge.r-c{background:var(--c-t);border-color:var(--c)}.badge.r-u{background:var(--u-t);border-color:var(--u)}.badge.r-r{background:var(--r-t);border-color:var(--r)}.badge.r-x{background:var(--x-t);border-color:var(--x)}
+.c-spawn ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.ent{display:flex;gap:10px}
+.dot{flex:none;width:10px;height:10px;margin-top:6px;box-shadow:inset 2px 2px 0 rgba(255,255,255,.35),inset -2px -2px 0 rgba(0,0,0,.25)}
+.dot.r-c{background:var(--c)}.dot.r-u{background:var(--u)}.dot.r-r{background:var(--r)}.dot.r-x{background:var(--x)}
+.ent-top{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.ent-top b{font-variant-numeric:tabular-nums;margin-right:2px}
+.cond{font-size:12px;padding:1px 6px;border-radius:3px;background:var(--paper);color:var(--muted)}
+.places{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;align-items:baseline}
+.pl{font-size:13px;padding:1px 7px;border:1px solid var(--line);border-radius:3px}
+.pl.all{border-style:dashed}
+.pl.st{border-color:var(--spruce-2);background:color-mix(in srgb,var(--spruce) 10%,transparent)}
+.ex{color:var(--muted);font-size:12px}
+.more{display:contents}
+.more summary{cursor:pointer;font-size:12px;color:var(--focus);list-style:none;padding:1px 4px}
+.more summary::-webkit-details-marker{display:none}
+.more[open] summary{display:none}
+#empty{padding:40px 16px;text-align:center;color:var(--muted)}
+footer{color:var(--muted);font-size:12px;margin-top:16px;line-height:1.6;max-width:72ch}
+footer a{color:inherit}
+.gen{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.gen select{padding:9px 30px 9px 12px;border:2px solid var(--line);border-radius:6px;background:var(--paper);font-weight:600;color:var(--ink);cursor:pointer}
+.gen select:focus{border-color:var(--focus);outline:none}
+.nm{display:block;border:0;background:none;padding:0;text-align:left;cursor:pointer}
+.nm .ko{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px;text-decoration-thickness:2px}
+.nm:hover .ko{text-decoration-color:var(--focus)}
+.note{display:inline-block;margin:6px 4px 0 0;font-size:12px;padding:2px 7px;border-radius:3px;background:var(--x-t);color:var(--ink);border:1px dashed var(--x)}
+dialog{border:0;padding:0;border-radius:10px;width:min(520px,calc(100vw - 24px));background:var(--surface);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,20,25,.55)}
+.dh{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+.dh .t{flex:1;min-width:0}
+#dNo{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+#dTitle{font-family:var(--disp);font-weight:400;font-size:28px;margin:2px 0;line-height:1.15}
+#dSub .form{display:inline-block;font-size:12px;padding:1px 6px;border-radius:3px;background:var(--paper);border:1px solid var(--line);margin-right:6px}
+#dSub .en{font-size:12px;color:var(--muted)}
+#closeDlg{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:13px}
+.db{padding:14px 20px 20px}
+#dRar{margin-bottom:14px}
+.shead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.shead h3{margin:0;font-size:14px}
+#megaKey{display:flex;align-items:center;gap:8px;border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:4px 12px 4px 4px;cursor:pointer;font-size:13px;font-weight:600}
+#megaKey svg{width:30px;height:30px;filter:grayscale(1) brightness(1.05);transition:filter .25s,transform .25s}
+#megaKey.on{border-color:#C2408A}
+#megaKey.on svg{filter:none;transform:rotate(-12deg) scale(1.06)}
+#megaKey:disabled{cursor:not-allowed;opacity:.55}
+.srow{display:grid;grid-template-columns:64px 64px 1fr;align-items:center;gap:8px;padding:5px 0}
+.sl{font-size:13px;color:var(--muted)}
+.sv{font-weight:600;font-variant-numeric:tabular-nums}
+.sv em{font-style:normal;font-size:11px;margin-left:4px}
+.sv em.up{color:#1E8A55}.sv em.dn{color:#C2413A}
+.track{height:14px;background:var(--paper);border-radius:2px;overflow:hidden}
+.fill{display:block;height:100%;background:var(--spruce-2);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);transition:width .35s ease}
+#stats.mega .fill{background:linear-gradient(90deg,#C2408A,#E9A23B)}
+.srow.total{border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
+.dfoot{font-size:12px;color:var(--muted);margin-top:12px}
+@media (prefers-reduced-motion:reduce){#megaKey svg,.fill{transition:none}}
+@media (max-width:860px){.gen{order:3;flex:1 1 auto}.gen select{flex:1}}
+@media (max-width:860px){
+ .layout{grid-template-columns:1fr}
+ #pick>summary{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;cursor:pointer;font-family:var(--disp);font-size:18px;list-style:none}
+ #pick>summary::-webkit-details-marker{display:none}
+ #pick>summary::after{content:"펼치기";font-family:var(--font);font-size:12px;color:var(--spruce-muted)}
+ #pick[open]>summary::after{content:"접기"}
+ .side{position:static;max-height:60vh;padding-top:0}
+ .search{flex:1 1 100%}
+ main{padding:16px 12px 32px}
+ .ore{width:calc(50% - 5px);height:64px}
+ table{min-width:0}
+ thead{display:none}
+ tbody tr{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;padding:12px;border-bottom:1px solid var(--line)}
+ tbody td{border:0;padding:0}
+ .c-no{width:auto;grid-row:1}.c-name{width:auto}.c-rar{grid-column:1/-1;width:auto}.c-spawn{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.ore{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand"><h1>코블버스 출현 도감</h1><p></p></div>
+ <label class="gen"><span>세대</span><select id="gen"><option value="0">(없음)</option><option value="1">1세대 관동</option><option value="2">2세대 성도</option><option value="3">3세대 호연</option><option value="4">4세대 신오</option><option value="5">5세대 하나</option><option value="6">6세대 칼로스</option><option value="7">7세대 알로라</option><option value="8">8세대 가라르</option><option value="9">9세대 팔데아</option></select></label>
+ <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="이름, 초성, 번호로 검색 (예: ㅍㅋㅊ)" aria-label="포켓몬 검색" autocomplete="off"></label>
+</header>
+<div class="layout">
+ <details id="pick" open><summary id="pickLabel">바이옴 고르기</summary>
+  <nav class="side" aria-label="바이옴"><input id="bfilter" class="bf" type="search" placeholder="바이옴 찾기" aria-label="바이옴 찾기" autocomplete="off"><div id="biomes"></div></nav>
+ </details>
+ <main>
+  <div class="ores" role="group" aria-label="희귀도">
+   <button type="button" class="ore" data-r="C" aria-pressed="false">흔함<small>88.5</small></button>
+   <button type="button" class="ore" data-r="U" aria-pressed="false">드묾<small>10</small></button>
+   <button type="button" class="ore" data-r="R" aria-pressed="false">레어<small>1.2</small></button>
+   <button type="button" class="ore" data-r="X" aria-pressed="false">울트라 레어<small>0.3</small></button>
+  </div>
+  <div class="bar"><span id="status"></span><button type="button" id="clearLoc" class="link" hidden>바이옴 선택 해제</button><button type="button" id="clearAll" class="link">전체 초기화</button></div>
+  <p class="hint">바이옴과 등급을 같이 고르면 그 바이옴에서 그 등급으로 나오는 포켓몬만 보여요. 등급은 여러 개를 같이 고를 수 있어요.</p>
+  <div class="tablewrap"><table><thead><tr><th scope="col">번호</th><th scope="col">포켓몬</th><th scope="col">등급</th><th scope="col">출현 정보</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" hidden>조건에 맞는 포켓몬이 없어요. 등급이나 바이옴 선택을 줄여 보세요.</div></div>
+  <footer>
+   출현 데이터는 COBBLEVERSE 공식 위키(cobbleverse.wiki)의 세대별 스폰 페이지를 옮긴 거예요. 주황색 점선 표시는 잡을 수 있는 시점이나 장소에 제한이 있다는 뜻이에요. 일부 전설의 출현 시점은 LUMYVERSE 공식 사이트 안내를 따랐어요. 포켓몬, 바이옴, 구조물 이름은 한국어로 옮겼고 영어 원래 이름을 같이 적었어요.
+   "오버월드 어디서나" 항목은 특정 바이옴을 골라도 함께 보여요. 위키에 "숲 계열 제외"처럼 묶음으로 적힌 제외 조건은 표에 그대로 적어 두었으니 직접 확인해 주세요.
+   등급 버튼의 숫자는 config의 best-spawner-config.json 가중치예요.
+  </footer>
+ </main>
+</div>
+<dialog id="dlg" aria-labelledby="dTitle">
+ <div class="dh"><div class="t"><div id="dNo"></div><h2 id="dTitle"></h2><div id="dSub"></div></div><button type="button" id="closeDlg">닫기</button></div>
+ <div class="db">
+  <div id="dRar"></div>
+  <div class="shead"><h3>종족값</h3><button type="button" id="megaKey" aria-pressed="false"><svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7C2DD"/><stop offset=".5" stop-color="#C2408A"/><stop offset="1" stop-color="#E9A23B"/></linearGradient></defs><circle cx="20" cy="20" r="18" fill="#2A2F36"/><polygon points="20,6 31,13 31,27 20,34 9,27 9,13" fill="url(#gg)"/><polygon points="20,6 31,13 20,18 9,13" fill="#fff" opacity=".45"/><polygon points="20,18 31,13 31,27 20,34" fill="#000" opacity=".18"/><polygon points="15,11 19,9 17,14" fill="#fff" opacity=".85"/></svg><span id="megaLabel">메가진화</span></button></div>
+  <div id="stats"></div>
+  <p class="dfoot">종족값은 원작 게임 기준이에요. 공식 위키에는 종족값이 없어서 따로 넣었어요. 보석 버튼을 누르면 메가진화 종족값으로 바뀌고, 메가진화가 두 가지인 포켓몬은 누를 때마다 차례로 바뀌어요.</p>
+ </div>
+</dialog>
+<script>
+// 공통 도우미, 바이옴 묶음, 조건 사전. 데이터 출처: cobbleverse.wiki (COBBLEVERSE 공식 위키)
+const JUNGLE=["Jungle","Sparse Jungle","Bamboo Jungle","Underground Jungle"];
+const MOUNT=["Windswept Forest","Windswept Gravelly Hills","Windswept Hills","Windswept Savanna","Meadow","Alpine Grove","Alpine Highlands","Blooming Valley","Forested Highlands","Snowy Slopes","Lavender Valley","Lush Valley","Arid Highlands","Savanna Slopes","Moonlight Valley","Sakura Valley","Temperate Highlands","Blooming Plateau","Yosemite Lowlands","Caldera","Volcanic Crater"];
+const MOUNTV=[...MOUNT,"Volcanic Peaks"];
+const GEO=[...MOUNTV,"Yosemite Cliffs"];
+const TEMPERATE=["River","Swamp","Mangrove Swamp","Orchid Swamp","Beach","Plains","Sunflower Plains","Cherry Grove","Forest","Flower Forest","Meadow","Birch Forest","Old Growth Birch Forest","Brushland","Shrubland","Steppe","Valley Clearing","Blooming Valley","Forested Highlands","Lavender Forest","Lavender Valley","Alpine Highlands","Mirage Isles","Sakura Grove","Sakura Valley","Temperate Highlands","Arid Highlands","Blooming Plateau"];
+const VAPO=TEMPERATE.filter(b=>b!=="Beach");
+const FOREST=["Forest","Cherry Grove","Flower Forest","Birch Forest","Old Growth Birch Forest","Blooming Valley","Forested Highlands","Lavender Forest","Lavender Valley","Mirage Isles","Sakura Grove","Sakura Valley","Temperate Highlands"];
+const FOREST_D=["Forest","Cherry Grove","Flower Forest","Birch Forest","Dark Forest","Old Growth Birch Forest","Pale Garden","Blooming Valley","Forested Highlands","Lavender Forest","Lavender Valley","Mirage Isles","Sakura Grove","Sakura Valley","Temperate Highlands"];
+const FOREST_G=["Forest","Cherry Grove","Flower Forest","Birch Forest","Grove","Old Growth Birch Forest","Blooming Valley","Forested Highlands","Lavender Forest","Lavender Valley","Mirage Isles","Sakura Grove","Sakura Valley","Temperate Highlands"];
+const FOREST_ALL=["Forest","Cherry Grove","Flower Forest","Birch Forest","Dark Forest","Grove","Old Growth Birch Forest","Pale Garden","Blooming Valley","Forested Highlands","Lavender Forest","Lavender Valley","Mirage Isles","Sakura Grove","Sakura Valley","Temperate Highlands"];
+const PLAINS=["Plains","Sunflower Plains","Meadow","Brushland","Shrubland","Steppe","Alpine Highlands","Arid Highlands","Blooming Plateau","Valley Clearing"];
+const PIDGEY=["Plains","Sunflower Plains","Cherry Grove","Forest","Flower Forest","Meadow","Birch Forest","Grove","Old Growth Birch Forest","Brushland","Shrubland","Steppe","Valley Clearing","Blooming Valley","Forested Highlands","Lavender Forest","Lavender Valley","Alpine Highlands","Mirage Isles","Sakura Grove","Sakura Valley","Temperate Highlands","Arid Highlands","Blooming Plateau"];
+const BUTTER=["Plains","Forest","Birch Forest","Old Growth Birch Forest","Brushland","Shrubland","Steppe","Valley Clearing","Forested Highlands","Alpine Highlands","Mirage Isles","Temperate Highlands","Arid Highlands"];
+const FLOWER=["Cherry Grove","Flower Forest","Meadow","Sunflower Plains","Blooming Plateau","Blooming Valley","Cloud Forest","Lavender Forest","Lavender Valley","Sakura Grove","Sakura Valley"];
+const PLAINS3=["Plains","Brushland","Shrubland","Steppe","Alpine Highlands","Arid Highlands","Valley Clearing"];
+const PLAINS2=["Plains","Sunflower Plains","Brushland","Shrubland","Steppe","Valley Clearing"];
+const SAVX=["Savanna","Savanna Plateau","Arid Highlands","Ashen Savanna","Desert Oasis","Hot Shrubland","Red Oasis","Savanna Slopes","Windswept Savanna"];
+const RAT=[...PLAINS2,...SAVX];
+const SAVANNA=["Savanna","Savanna Plateau","Windswept Savanna","Arid Highlands","Ashen Savanna","Brushland","Desert Oasis","Hot Shrubland","Red Oasis","Savanna Slopes","Shrubland"];
+const BADLANDS=["Badlands","Wooded Badlands","Eroded Badlands","Ashen Savanna","Red Oasis"];
+const BADL=[...BADLANDS,"Savanna","Savanna Plateau","Windswept Savanna","Arid Highlands","Brushland","Desert Oasis","Hot Shrubland","Savanna Slopes","Shrubland"];
+const DESERT=["Desert","Ancient Sands","Desert Canyon","Desert Oasis","Lush Desert","Sandstone Valley"];
+const SAND=["Desert","Ancient Sands","Desert Canyon","Desert Oasis","Lush Desert","Red Oasis","Sandstone Valley"];
+const EKANS=[...BADLANDS,...DESERT,"Savanna","Savanna Plateau","Arid Highlands","Brushland","Shrubland","Hot Shrubland","Savanna Slopes"];
+const FREEZE=["Grove","Frozen River","Jagged Peaks","Snowy Beach","Snowy Plains","Snowy Slopes","Snowy Taiga","Snowy Badlands","Alpine Grove","Frozen Peaks","Ice Spikes","Glacial Chasm","Siberian Taiga","Ice Marsh","Siberian Grove","Snowy Cherry Grove","Cold Shrubland","Snowy Shield","Wintry Forest","Wintry Lowlands","Frozen Ocean","Deep Frozen Ocean"];
+const MEOWA=[...EKANS,...FREEZE];
+const MEOWG=[...FREEZE,"Taiga","Old Growth Pine Taiga","Old Growth Spruce Taiga","Bryce Canyon","Cloud Forest","Moonlight Grove","Moonlight Valley","Shield","Yosemite Lowlands"];
+const SNOWSAND=["Frozen Peaks","Ice Spikes","Glacial Chasm","Siberian Taiga","Siberian Grove","Ice Marsh","Alpine Grove","Snowy Cherry Grove","Snowy Shield","Cold Shrubland","Wintry Forest","Wintry Lowlands"];
+const AVULPIX=["Ice Marsh","Siberian Grove","Snowy Cherry Grove","Grove","Snowy Taiga","Alpine Grove","Cold Shrubland","Snowy Shield","Wintry Forest","Wintry Lowlands"];
+const SWAMP=["Mangrove Swamp","Swamp","Ice Marsh","Orchid Swamp"];
+const SWAMP3=["Mangrove Swamp","Swamp","Orchid Swamp"];
+const DARK=["Dark Forest","Pale Garden","Deep Dark"];
+const MYST=["Dark Forest","Amethyst Canyon","Amethyst Rainforest","Mirage Isles","Moonlight Grove","Moonlight Valley"];
+const POLI=["River",...JUNGLE,...MYST,"Mushroom Fields","Fungal Caves"];
+const LUSHC=["Lush Caves","Fungal Caves","Underground Jungle"];
+const OCEAN=["Ocean","Warm Ocean","Lukewarm Ocean","Cold Ocean","Frozen Ocean","Deep Ocean","Deep Cold Ocean","Deep Warm Ocean"];
+const SHORE=["Beach","Snowy Beach","Stony Shore","White Cliffs"];
+const COLDO=["Cold Ocean","Deep Cold Ocean","Deep Frozen Ocean","Frozen Ocean"];
+const WARMO=["Ocean","Warm Ocean","Lukewarm Ocean","Deep Ocean","Deep Warm Ocean"];
+const RIVERS=["River","Warm River","Frozen River"];
+const KARP=["River","Frozen River","Swamp","Mangrove Swamp","Ice Marsh","Orchid Swamp",...OCEAN];
+const HORSEA=["Deep Lukewarm Ocean","Lukewarm Ocean","Warm Ocean"];
+const SEEL=["Deep Frozen Ocean","Frozen Ocean"];
+const HGROW=["Jagged Peaks","Snowy Slopes","Stony Peaks","Rocky Mountains","Volcanic Peaks"];
+const ABRA=[...MOUNT.filter(b=>b!=="Moonlight Valley"),"Plains","Sunflower Plains","Cherry Grove","Forest","Flower Forest","Birch Forest","Grove","Old Growth Birch Forest","Pale Garden","Brushland","Shrubland","Steppe","Valley Clearing","Lavender Forest","Sakura Grove"];
+const RHY=["Meadow","Windswept Forest","Windswept Gravelly Hills","Windswept Hills","Windswept Savanna","Alpine Grove","Alpine Highlands","Blooming Valley","Forested Highlands","Lavender Valley","Lush Valley","Arid Highlands","Savanna Slopes","Sakura Valley","Temperate Highlands","Blooming Plateau","Caldera","Volcanic Crater","Volcanic Peaks","Yosemite Cliffs","Savanna","Savanna Plateau","Ashen Savanna","Brushland","Desert Oasis","Hot Shrubland","Red Oasis","Shrubland"];
+const SCY_M=["Windswept Forest","Windswept Gravelly Hills","Windswept Hills","Windswept Savanna","Meadow","Alpine Highlands","Lush Valley","Arid Highlands","Savanna Slopes","Moonlight Valley","Blooming Plateau","Yosemite Lowlands","Caldera","Volcanic Crater"];
+const SNORLAX=["Ice Marsh","Siberian Grove","Snowy Cherry Grove",...FOREST_ALL,"Windswept Forest","Windswept Gravelly Hills","Windswept Hills","Windswept Savanna","Meadow","Alpine Grove","Alpine Highlands","Snowy Slopes","Lush Valley","Arid Highlands","Savanna Slopes","Moonlight Valley","Blooming Plateau","Yosemite Lowlands","Caldera","Volcanic Crater"];
+const TAUROS=["Plains","Sunflower Plains","Brushland","Shrubland","Steppe","Valley Clearing","Savanna","Savanna Plateau","Ashen Savanna","Desert Oasis","Hot Shrubland","Red Oasis"];
+const PALDEA_T=["Meadow","Alpine Highlands","Arid Highlands","Blooming Plateau"];
+const JOLT=[...PLAINS2,...SAVX,"Meadow","Windswept Forest","Windswept Gravelly Hills","Windswept Hills","Alpine Grove","Alpine Highlands","Blooming Valley","Forested Highlands","Snowy Slopes","Lavender Valley","Lush Valley","Moonlight Valley","Sakura Valley","Temperate Highlands","Blooming Plateau","Yosemite Lowlands","Caldera","Volcanic Crater","Volcanic Peaks","Yosemite Cliffs"];
+const CLEF1=["Dripstone Caves","Amethyst Canyon","Amethyst Rainforest","Mirage Isles","Moonlight Grove","Moonlight Valley"];
+const PARAS2=["Dark Forest","Mushroom Fields","Fungal Caves","Mirage Isles","Crimson Forest"];
+const VIL4=["Village (Plains)","Village (Taiga)","Village (Snowy)","Village (Savanna)"];
+const VILD=["Village (Plains)","Village (Desert)","Village (Taiga)","Village (Savanna)"];
+const VILGR=["Village (Desert)","Village (Taiga)","Village (Snowy)","Village (Savanna)"];
+const VILALL=["Village (All Types)"];
+const MANSION=["Woodland Mansion"];
+const RUINS=["Cold Ocean Ruins","Warm Ocean Ruins"];
+const LSC=["Lush Shipwreck Cove"], SSC=["Submerged Shipwreck Cove"];
+
+const K={maxY48:"Y 48 이하",minY48:"Y 48 이상",inlava:"용암 속",cobweb:"거미줄 근처",sunflower:"해바라기 근처",coral:"산호 근처",deadcoral:"죽은 산호 근처",quartz:"석영 블록 위",wool:"양털/카펫 근처",twi5:"황혼 때 ×5",storm33:"뇌우 때 ×3.3",day33:"낮에 ×3.3",rain33:"비 올 때 ×3.3",sky:"하늘빛 8–15",dim:"하늘빛 0–7",sky0:"하늘빛 0",light0:"밝기 0",clear:"맑음",day:"낮",night:"밤",rain:"비",storm:"뇌우",water:"물 근처",flow:"흐르는 물 근처",sub:"물속",surf:"수면",floor:"해저",inwater:"물 안",seeSky:"하늘이 보여야 함",indoor:"실내/지하",minY0:"Y 0 이상",maxY0:"Y 0 이하",maxY32:"Y 32 이하",maxY62:"Y 62 이하",shipY:"Y -41~9",subY:"Y -60~13",t2:"뇌우 때 ×2",t25:"뇌우 때 ×2.5",t5:"뇌우 때 ×5",twi:"황혼 때 ×2.5",n15:"밤에 ×1.5",n025:"밤에 ×0.25",n5:"밤에 ×5",d15:"낮에 ×1.5",d025:"낮에 ×0.25",moon:"보름달",lily:"연잎 근처",redstone:"레드스톤 근처",rod:"피뢰침 근처",leek:"약용 파 근처",nowater:"물이 없는 곳",iron:"철광석 근처",lava:"용암/마그마 블록 근처",apri:"규토리 근처",sacch:"사카린 나무 근처",nosacch:"사카린 나무가 없는 곳",slime:"슬라임 청크",lava5:"용암 근처 ×5",water5:"물 근처 ×5",special:"특수 조우"};
+// e(희귀도, 레벨, 조건키, 장소) — 장소: {b:[바이옴]} {s:[구조물]} {all:"ow"|"nether"|"end", ex:[제외]}
+const e=(r,lv,c,w)=>({r,lv,c:c.map(k=>K[k]),...w});
+const B=b=>({b}), S=s=>({s}), OW=(ex=[])=>({all:"ow",ex});
+const P=[]; // [dex, ko, en, form(ko|null), entries]
+function add(d,ko,en,form,entries){P.push({d,ko,en,form,entries});}
+
+
+const UNLOCK={}; // 도감번호: 출현 시점 안내
+const U_=a=>[...new Set(a)];
+
+// ---- 1세대 (cobbleverse.wiki/spawns/gen1) ----
+[[1,"이상해씨","Bulbasaur","5-32"],[2,"이상해풀","Ivysaur","16-40"],[3,"이상해꽃","Venusaur","32-52"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("X",l,["sky"],B(JUNGLE))]));
+[[4,"파이리","Charmander","5-31"],[5,"리자드","Charmeleon","16-40"],[6,"리자몽","Charizard","36-53"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("X",l,["clear","sky"],B(MOUNTV)),e("X",l,[],B(["Basalt Deltas"]))]));
+[[7,"꼬부기","Squirtle","5-31"],[8,"어니부기","Wartortle","16-40"],[9,"거북왕","Blastoise","36-53"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("X",l,["sky","water"],B(TEMPERATE)),e("X",l,["sub","seeSky"],B(TEMPERATE)),e("X",l,["sub","indoor","sky"],B(TEMPERATE))]));
+[[10,"캐터피","Caterpie","1-20"],[11,"단데기","Metapod","7-21"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("C",l,["sky"],B([...FOREST,...PLAINS]))]);add(d,k,n,"발렌시아",[e("C",l,["sky"],B(JUNGLE))]);});
+add(12,"버터플","Butterfree",null,[e("C","10-40",["day","sky"],B(BUTTER)),e("C","10-40",["day","sky"],B(FLOWER))]);
+add(12,"버터플","Butterfree","발렌시아",[e("C","10-40",["day","sky"],B(JUNGLE))]);
+add(13,"뿔충이","Weedle",null,[e("C","1-20",["sky"],B([...FOREST_D,...JUNGLE]))]);
+add(14,"딱충이","Kakuna",null,[e("C","7-21",["sky"],B([...FOREST_D,...JUNGLE]))]);
+add(15,"독침붕","Beedrill",null,[e("C","10-40",["clear","day","sky"],B([...FOREST_D,...JUNGLE]))]);
+[[16,"구구","Pidgey","1-25"],[17,"피죤","Pidgeotto","18-35"],[18,"피죤투","Pidgeot","36-48"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["day","sky"],B(PIDGEY))]));
+[[19,"꼬렛","Rattata","1-25"],[20,"레트라","Raticate","20-41"]].forEach(([d,k,n,l])=>{
+ add(d,k,n,null,[e("C",l,["night","sky"],B(RAT)),e("C",l,["dim","minY0"],OW(["Deep Dark"])),e("U",l,["indoor","sky0","minY0"],OW(["Deep Dark"]))]);
+ add(d,k,n,"알로라",[e("C",l,["dim","maxY0"],OW(["Deep Dark"])),e("U",l,["indoor","sky0","maxY0"],OW(["Deep Dark"])),e("C",l,["night","sky"],B(DARK))]);});
+add(21,"깨비참","Spearow",null,[e("C","1-26",["day","sky"],B(BADL))]);
+add(22,"깨비드릴조","Fearow",null,[e("C","20-44",["day","sky"],B(BADL))]);
+[[23,"아보","Ekans","4-29"],[24,"아보크","Arbok","22-45"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("C",l,["sky"],B(EKANS))]);add(d,k,n,"특수 무늬",[e("C",l,["sky"],B(EKANS))]);add(d,k,n,"어두운 무늬",[e("C",l,[],B(["Deep Dark"]))]);});
+add(25,"피카츄","Pikachu",null,[e("U","16-32",["sky","t2"],B(FOREST_G))]);
+add(25,"피카츄","Pikachu","알로라 계열",[e("U","16-32",["sky","t5"],B(["Beach"]))]);
+[["마담",["Sunflower Plains"]],["마스크드",["Savanna"]],["닥터",["Jungle"]],["아이돌",["Cherry Grove"]],["하드록",["Badlands"]]].forEach(([f,b])=>add(25,"피카츄","Pikachu","옷갈아입기 "+f,[e("R","22-44",["sky","t25"],B(b))]));
+add(26,"라이츄","Raichu",null,[e("U","27-49",["sky","t5"],B(FOREST_G))]);
+add(26,"라이츄","Raichu","알로라",[e("U","27-49",["sky","t5"],B(["Beach"]))]);
+add(27,"모래두지","Sandshrew",null,[e("C","5-30",[],B(SAND))]);
+add(27,"모래두지","Sandshrew","알로라",[e("U","15-32",[],B(SNOWSAND))]);
+add(28,"고지","Sandslash",null,[e("C","22-47",[],B(SAND))]);
+add(28,"고지","Sandslash","알로라",[e("U","24-55",[],B(SNOWSAND))]);
+[[29,"니드런♀","Nidoran ♀","3-28"],[30,"니드리나","Nidorina","16-37"],[31,"니드퀸","Nidoqueen","37-51"],[32,"니드런♂","Nidoran ♂","3-28"],[33,"니드리노","Nidorino","16-37"],[34,"니드킹","Nidoking","37-51"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("U",l,["sky"],B(SAVANNA))]));
+[[35,"삐삐","Clefairy","17-32"],[36,"픽시","Clefable","27-48"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("U",l,["night","sky"],B(CLEF1)),e("U",l,["dim"],B(["Dripstone Caves"])),e("U",l,["night","moon","sky"],B(MOUNT))]));
+[[37,"식스테일","Vulpix","5-30"],[38,"나인테일","Ninetales","25-51"]].forEach(([d,k,n,l])=>{
+ add(d,k,n,null,[e("U",l,["sky","twi"],B([...FOREST,...BADLANDS])),e("C",l,[],B(["Crimson Forest"]))]);
+ add(d,k,n,"알로라",[e("U",l,["sky","twi"],B(AVULPIX)),e("R","35-55",["sky"],S(["Crown Spire"]))]);});
+[[39,"푸린","Jigglypuff","16-27"],[40,"푸크린","Wigglytuff","22-44"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky","n15"],B(FLOWER)),e("C",l,["sky","n15"],B(PLAINS3))]));
+[[41,"주뱃","Zubat","1-25"],[42,"골뱃","Golbat","22-46"]].forEach(([d,k,n,l])=>add(d,k,n,null,[
+ e("C",l,["clear","night","sky"],B([...FOREST,...SWAMP3])),e("C",l,["dim","n025"],B([...FOREST,...SWAMP3])),
+ e("C",l,["dim","d15"],OW(["Deep Dark","숲 계열","늪 계열"])),e("U",l,["indoor","sky0","d15"],OW(["Deep Dark","숲 계열","늪 계열"])),
+ e("C",l,["clear","sky","n15"],B(DARK)),e("U",l,["dim"],B(["Deep Dark","Deep Caves"]))]));
+[[43,"뚜벅쵸","Oddish","7-32",["sky","d025"]],[44,"냄새꼬","Gloom","21-40",["sky","d025"]],[45,"라플레시아","Vileplume","35-49",["night","sky"]]].forEach(([d,k,n,l,c])=>{
+ add(d,k,n,null,[e("C",l,c,B(JUNGLE)),e("C",l,c,B([...FLOWER,...PLAINS3]))]);add(d,k,n,"발렌시아",[e("C",l,c,B(SAVANNA))]);});
+[[46,"파라스","Paras","4-29"],[47,"파라섹트","Parasect","24-41"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("U",l,["dim"],B(LUSHC)),e("C",l,[],B(PARAS2)),e("U",l,["dim","shipY"],S(LSC))]));
+add(48,"콘팡","Venonat",null,[e("C","6-31",["night","sky"],B([...DARK,...SWAMP]))]);
+add(49,"도나리","Venomoth",null,[e("C","31-45",["clear","night","sky"],B([...DARK,...SWAMP]))]);
+[[50,"디그다","Diglett","2-27"],[51,"닥트리오","Dugtrio","26-43"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("C",l,["dim","minY0"],OW(["Deep Dark"]))]);add(d,k,n,"알로라",[e("C",l,["dim","maxY0"],OW(["Deep Dark"]))]);});
+add(52,"나옹","Meowth",null,[e("C","4-29",["clear","sky","n15"],OW(["건조 계열","얼음 계열","타이가 계열"])),e("C","4-29",["clear","sky","n15"],S(["Village (Plains)","Village (Desert)","Village (Savanna)"]))]);
+add(52,"나옹","Meowth","알로라",[e("C","4-29",["clear","sky","n15"],S(["Pillager Outpost","Swamp Hut","Woodland Mansion"])),e("C","4-29",["sky","n15"],B(MEOWA))]);
+add(52,"나옹","Meowth","가라르",[e("C","4-29",["sky","n15"],B(MEOWG)),e("C","4-29",["sky","n15"],S(["Village (Taiga)","Village (Snowy)"]))]);
+add(53,"페르시온","Persian",null,[e("C","28-44",["clear","sky","n15"],OW(["건조 계열","얼음 계열","타이가 계열"])),e("C","28-44",["clear","sky","n15"],S(["Village (Plains)"])),e("C","28-44",["sky","n15"],S(["Village (Desert)","Village (Savanna)"]))]);
+add(53,"페르시온","Persian","알로라",[e("C","28-44",["clear","sky","n15"],S(["Pillager Outpost","Swamp Hut","Woodland Mansion"])),e("C","28-44",["sky","n15"],B(MEOWA))]);
+[[54,"고라파덕","Psyduck","7-32"],[55,"골덕","Golduck","33-50"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky"],B(SWAMP)),e("C",l,["sky","water","flow"],B(["River",...MYST])),e("C",l,["sub","seeSky","sky"],B(["River","Swamp","Mangrove Swamp","Orchid Swamp",...MYST]))]));
+add(56,"망키","Mankey",null,[e("C","6-27",["sky"],B([...MOUNT,...JUNGLE]))]);
+add(57,"성원숭","Primeape",null,[e("C","28-46",["sky"],B([...MOUNT,...JUNGLE]))]);
+add(58,"가디","Growlithe",null,[e("U","10-35",["sky"],OW(["사막 계열"])),e("U","10-35",["sky"],S(VIL4))]);
+add(58,"가디","Growlithe","히스이",[e("U","12-36",["seeSky"],B(HGROW))]);
+add(59,"윈디","Arcanine",null,[e("U","30-56",["sky"],OW(["사막 계열"])),e("U","30-56",["sky"],S(VIL4))]);
+add(59,"윈디","Arcanine","히스이",[e("R","38-57",["seeSky"],B(HGROW)),e("U","38-57",[],B(["Basalt Deltas"]))]);
+add(60,"발챙이","Poliwag",null,[e("C","5-30",["rain","sky"],B(SWAMP)),e("C","5-30",["sub","lily"],B(SWAMP)),e("C","5-30",["rain","sky","water"],B(POLI)),e("C","5-30",["sub","seeSky"],B(POLI)),e("C","5-30",["sub","dim"],B(LUSHC)),e("C","5-30",["inwater","dim","shipY"],S(LSC))]);
+add(61,"슈륙챙이","Poliwhirl",null,[e("C","25-39",["rain","sky"],B(SWAMP)),e("C","25-39",["sub","lily"],B(SWAMP)),e("C","25-39",["rain","sky","water"],B(POLI)),e("C","25-39",["sub","seeSky"],B(POLI)),e("C","25-39",["sub","dim"],B(LUSHC)),e("C","25-39",["sub","indoor","sky"],B(POLI)),e("C","25-39",["sub","dim","shipY"],S(LSC))]);
+add(62,"강챙이","Poliwrath",null,[e("C","34-51",["rain","sky"],B(SWAMP)),e("C","34-51",["sub","lily"],B(SWAMP)),e("C","34-51",["rain","sky","water"],B(POLI)),e("C","34-51",["sub","seeSky"],B(POLI)),e("C","34-51",["sub","dim"],B(LUSHC)),e("C","34-51",["inwater","dim","shipY"],S(LSC))]);
+[[63,"캐이시","Abra","6-31"],[64,"윤겔라","Kadabra","16-40"],[65,"후딘","Alakazam","35-50"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("R",l,["night","sky"],B(ABRA)),e("U",l,["night","sky"],B(MYST)),e("C",l,["indoor"],{all:"ow",ex:[],s:MANSION})]));
+[[66,"알통몬","Machop","6-31"],[67,"근육몬","Machoke","28-41"],[68,"괴력몬","Machamp","36-51"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky","n025"],B(MOUNT))]));
+[[69,"모다피","Bellsprout","5-30"],[70,"우츠동","Weepinbell","21-39"],[71,"우츠보트","Victreebel","34-49"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky"],B(JUNGLE))]));
+add(72,"왕눈해","Tentacool",null,[e("C","9-28",["surf","seeSky"],B(OCEAN)),e("C","9-28",["sub","sky"],B(OCEAN))]);
+add(73,"독파리","Tentacruel",null,[e("C","30-52",["surf","sky"],B(OCEAN)),e("C","30-52",["sub","seeSky"],B(OCEAN))]);
+[[74,"꼬마돌","Geodude","5-30"],[75,"데구리","Graveler","25-39"],[76,"딱구리","Golem","34-50"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("C",l,["sky"],B(GEO)),e("C",l,["dim"],OW(["Deep Dark"]))]);add(d,k,n,"알로라",[e("C",l,["iron"],OW())]);});
+[[77,"포니타","Ponyta","16-41"],[78,"날쌩마","Rapidash","40-50"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("U",l,["clear","sky","n025"],B(RAT)),e("C",l,[],B(["Nether Wastes"]))]);add(d,k,n,"가라르",[e("U",l,["sky","n025"],B([...FLOWER,...MYST]))]);});
+add(79,"야돈","Slowpoke",null,[e("C","7-32",["sky"],B(["Beach","Snowy Beach"])),e("C","7-32",["sky"],B(["River","Warm River"]))]);
+add(79,"야돈","Slowpoke","가라르",[e("C","7-32",["sky","water"],B(["Mushroom Fields"]))]);
+add(80,"야도란","Slowbro",null,[e("C","37-49",["sky"],B(["Beach","Snowy Beach"]))]);
+add(80,"야도란","Slowbro","가라르",[e("C","37-49",["sky","water"],B(["Mushroom Fields"]))]);
+[[81,"코일","Magnemite","8-33"],[82,"레어코일","Magneton","30-47"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("U",l,["redstone"],OW(["Deep Dark"])),e("C",l,["sky","t5","rod"],OW())]));
+add(83,"파오리","Farfetch'd",null,[e("C","13-38",["sky","n025","leek"],OW())]);
+add(83,"파오리","Farfetch'd","가라르",[e("R","13-38",["sky","n025","nowater"],B(FOREST_ALL))]);
+[[84,"두두","Doduo","6-30"],[85,"두트리오","Dodrio","31-47"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky","n025"],B(SAVANNA)),e("C",l,["sky"],B(["Plains","Meadow"]))]));
+[[86,"쥬쥬","Seel","8-33"],[87,"쥬레곤","Dewgong","34-48"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky","n025"],B(SEEL)),e("C",l,["sub","seeSky","d025"],B(SEEL)),e("C",l,["sub","indoor","sky","d025"],B(SEEL))]));
+[[88,"질퍽이","Grimer","8-33"],[89,"질뻐기","Muk","38-50"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("U",l,["surf","sky","n15"],B(SWAMP)),e("U",l,["surf","sky","n15"],S(VILGR))]);add(d,k,n,"알로라",[e("U",l,["sky","n15"],B(["Beach"]))]);});
+[[90,"셀러","Shellder","6-31"],[91,"파르셀","Cloyster","26-53"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["floor","seeSky"],B(COLDO)),e("C",l,["floor","seeSky"],B(WARMO)),e("C",l,["floor","indoor","subY"],S(SSC))]));
+[[92,"고오스","Gastly","6-31",["C","U","C","C"]],[93,"고우스트","Haunter","25-41",["C","C","C","C"]],[94,"팬텀","Gengar","36-50",["U","U","U","U"]]].forEach(([d,k,n,l,r])=>add(d,k,n,null,[e(r[0],l,["light0","sky0"],B(["Deep Dark","Deep Caves"])),e(r[1],l,["indoor","sky0"],OW()),e(r[2],l,["light0","sky"],B(DARK)),e(r[3],l,[],{all:"nether",ex:[]})]));
+add(95,"롱스톤","Onix",null,[e("U","14-39",["dim"],OW(["Deep Dark"])),e("U","14-39",[],B(["Basalt Deltas"]))]);
+add(96,"슬리프","Drowzee",null,[e("C","8-33",["night","sky"],S(VILD))]);
+add(97,"슬리퍼","Hypno",null,[e("C","26-48",["night","sky"],S(VILD))]);
+[[98,"크랩","Krabby","8-33"],[99,"킹크랩","Kingler","28-48"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky"],B(SHORE)),e("C",l,["floor","seeSky"],B([...SHORE,...OCEAN])),e("C",l,["floor","indoor","subY"],S(SSC))]));
+[[100,"찌리리공","Voltorb","8-33"],[101,"붐볼","Electrode","30-49"]].forEach(([d,k,n,l])=>{add(d,k,n,null,[e("C",l,["sky","t5"],OW()),e("C",l,["storm","sky"],S(VILALL)),e("U",l,["sky","t5","rod"],OW())]);add(d,k,n,"히스이",[e("U",l,["sky","t5","apri"],OW())]);});
+add(102,"아라리","Exeggcute",null,[e("C","8-33",["sky"],B([...JUNGLE,...SAVANNA]))]);
+add(102,"아라리","Exeggcute","알로라 계열",[e("U","8-33",["sky"],B(["Beach"]))]);
+add(103,"나시","Exeggutor",null,[e("C","28-53",["sky"],B([...JUNGLE,...SAVANNA]))]);
+add(103,"나시","Exeggutor","알로라",[e("U","28-53",["sky"],B(["Beach"]))]);
+add(104,"탕구리","Cubone",null,[e("C","7-32",["sky"],B([...BADLANDS,...DESERT]))]);
+add(104,"탕구리","Cubone","알로라 계열",[e("C","7-32",["sky"],B(["Volcanic Crater","Volcanic Peaks"])),e("C","7-32",[],B(["Soul Sand Valley"]))]);
+add(105,"텅구리","Marowak",null,[e("C","28-43",["sky"],B([...BADLANDS,...DESERT]))]);
+add(105,"텅구리","Marowak","알로라",[e("C","28-43",["sky"],B(["Volcanic Crater","Volcanic Peaks"])),e("C","28-43",[],B(["Soul Sand Valley"]))]);
+add(106,"시라소몬","Hitmonlee",null,[e("U","20-46",["sky","n025"],B(MOUNT))]);
+add(107,"홍수몬","Hitmonchan",null,[e("U","20-46",["sky","n025"],B(MOUNT))]);
+add(108,"내루미","Lickitung",null,[e("U","14-39",["sky","n025"],B(RAT))]);
+add(109,"또가스","Koffing",null,[e("C","9-34",["sky","n5"],OW()),e("C","12-32",["sky","n5"],S(VILALL)),e("C","9-34",[],B(["Soul Sand Valley"]))]);
+add(109,"또가스","Koffing","가라르 계열",[e("C","9-34",["sky","n15"],B([...MYST,"Pale Garden","Deep Dark"]))]);
+add(110,"또도가스","Weezing",null,[e("C","35-49",["sky","n5"],OW()),e("C","38-48",["sky","n5"],S(VILALL)),e("C","35-49",[],B(["Soul Sand Valley"]))]);
+add(110,"또도가스","Weezing","가라르",[e("C","35-49",["sky","n15"],B([...MYST,"Pale Garden","Deep Dark"]))]);
+add(111,"뿔카노","Rhyhorn",null,[e("C","10-35",["sky","n025"],B(RHY))]);
+add(112,"코뿌리","Rhydon",null,[e("C","42-49",["sky","n025"],B(RHY))]);
+add(113,"럭키","Chansey",null,[e("R","17-45",["sky","n025"],B([...PIDGEY,"Cloud Forest"])),e("R","17-45",["sky","n025"],S(VILALL))]);
+add(114,"덩쿠리","Tangela",null,[e("C","19-44",["sky"],B(JUNGLE))]);
+add(115,"캥카","Kangaskhan",null,[e("R","24-49",["sky","n025"],B(SAVANNA))]);
+[[116,"쏘드라","Horsea","5-30"],[117,"시드라","Seadra","32-44"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sub","seeSky"],B(HORSEA)),e("C",l,["sub","indoor","sky"],B(HORSEA)),e("C",l,["sub","indoor","subY"],S(SSC))]));
+[[118,"콘치","Goldeen","7-32"],[119,"왕콘치","Seaking","33-45"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sub","seeSky"],B(RIVERS)),e("C",l,["sub","indoor","sky"],B(RIVERS))]));
+add(120,"별가사리","Staryu",null,[e("U","9-34",["sky"],B(SHORE)),e("U","9-34",["sub","seeSky","n15"],B(OCEAN)),e("U","9-34",["sub","indoor","sky","n15"],B(OCEAN)),e("U","9-34",["sub","indoor","subY"],S(SSC))]);
+add(121,"아쿠스타","Starmie",null,[e("U","29-52",["night","sky"],B(SHORE)),e("U","29-52",["sub","seeSky","n15"],B(OCEAN)),e("U","29-52",["sub","indoor","sky","n15"],B(OCEAN)),e("U","29-52",["sub","indoor","subY"],S(SSC))]);
+add(122,"마임맨","Mr. Mime",null,[e("U","26-46",["sky"],OW(["얼음 계열"])),e("U","34-48",["sky"],S(VILD)),e("C","26-46",["indoor"],S(MANSION))]);
+add(122,"마임맨","Mr. Mime","가라르",[e("U","26-46",["sky"],B(FREEZE)),e("U","26-46",["sky"],S(["Village (Snowy)"]))]);
+add(123,"스라크","Scyther",null,[e("R","25-50",["day","sky"],B([...FOREST,...SCY_M])),e("U","25-50",["day","sky"],B(JUNGLE))]);
+add(124,"루주라","Jynx",null,[e("U","30-46",["sky","n025"],{b:FREEZE,s:["Village (Snowy)"]})]);
+add(125,"에레브","Electabuzz",null,[e("U","30-50",["sky","t5"],B([...MOUNT,...PLAINS2]))]);
+add(126,"마그마","Magmar",null,[e("C","30-50",["clear","sky","lava"],B(MOUNT.filter(b=>b!=="Volcanic Crater"))),e("C","30-50",["clear","sky"],B(["Volcanic Crater","Volcanic Peaks"])),e("C","30-50",[],B(["Basalt Deltas","Nether Wastes"]))]);
+add(127,"쁘사이저","Pinsir",null,[e("R","25-50",["sky","n15","nosacch"],B(JUNGLE)),e("U","25-50",["sky","n15","sacch"],OW(["얼음 계열"]))]);
+add(128,"켄타로스","Tauros",null,[e("C","24-49",["sky","n025"],B(TAUROS))]);
+add(128,"켄타로스","Tauros","팔데아 컴뱃종",[e("C","24-49",["sky","n025"],B(PALDEA_T))]);
+add(128,"켄타로스","Tauros","팔데아 블레이즈종",[e("C","24-49",["sky","n025","lava5"],B(PALDEA_T))]);
+add(128,"켄타로스","Tauros","팔데아 워터종",[e("C","24-49",["sky","n025","water5"],B(PALDEA_T))]);
+add(129,"잉어킹","Magikarp",null,[e("C","1-20",["sub","seeSky"],B(KARP)),e("U","1-20",["surf","sky"],B(KARP)),e("C","1-20",["sub","indoor","sky"],B(KARP))]);
+add(130,"갸라도스","Gyarados",null,[e("C","20-54",["sub","seeSky"],B(KARP)),e("U","20-54",["surf","sky"],B(KARP)),e("C","20-54",["sub","indoor","sky"],B(KARP))]);
+add(131,"라프라스","Lapras",null,[e("U","29-54",["surf","sky"],B(SEEL)),e("X","29-54",["surf","sky"],B(OCEAN.filter(b=>b!=="Frozen Ocean")))]);
+add(132,"메타몽","Ditto",null,[e("R","4-29",["slime","sky"],OW(["바다 계열"])),e("X","4-29",["sky"],OW(["바다 계열"])),e("U","4-29",["indoor"],S(MANSION))]);
+add(133,"이브이","Eevee",null,[e("R","5-33",["sky"],B(PIDGEY)),e("U","5-33",["sky"],OW()),e("U","5-33",["sky"],S(VILALL)),e("U","5-33",["indoor"],S(MANSION))]);
+add(134,"샤미드","Vaporeon",null,[e("X","28-53",["sky","water"],B(VAPO)),e("X","28-53",["sub","sky"],B(VAPO)),e("U","28-53",["sky"],S(VILALL)),e("U","28-53",["indoor"],S(MANSION))]);
+add(135,"쥬피썬더","Jolteon",null,[e("X","28-53",["sky"],B(JOLT)),e("U","28-53",["sky"],S(VILALL)),e("U","28-53",["indoor"],S(MANSION))]);
+add(136,"부스터","Flareon",null,[e("X","28-53",["sky"],B([...BADLANDS,...DESERT])),e("U","28-53",["sky"],S(VILALL)),e("U","28-53",["indoor"],S(MANSION))]);
+add(137,"폴리곤","Porygon",null,[e("U","45-68",[],{all:"end",ex:[]})]);
+[[138,"암나이트","Omanyte","11-36"],[139,"암스타","Omastar","40-54"],[140,"투구","Kabuto","11-36"],[141,"투구푸스","Kabutops","40-54"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("X",l,["dim"],B(LUSHC)),e("X",l,["sub","dim"],B(LUSHC))]));
+add(142,"프테라","Aerodactyl",null,[e("X","27-62",["dim"],B(LUSHC))]);
+add(143,"잠만보","Snorlax",null,[e("R","34-54",["sky","nosacch"],B(SNORLAX)),e("U","34-54",["sky","sacch"],OW())]);
+add(144,"프리져","Articuno",null,[e("X","50-60",["special"],S(["Articuno Tower (Kanto)"]))]);
+add(144,"프리져","Articuno","가라르",[e("X","60-70",["night"],S(["Dyna Tree (Hoenn)"]))]);
+add(145,"썬더","Zapdos",null,[e("X","50-60",["special"],S(["Zapdos Tower (Kanto)"]))]);
+add(145,"썬더","Zapdos","가라르",[e("X","60-70",["storm"],S(["Dyna Tree (Hoenn)"]))]);
+add(146,"파이어","Moltres",null,[e("X","50-60",["special"],S(["Moltres Tower (Nether)"]))]);
+add(146,"파이어","Moltres","가라르",[e("X","60-70",["day"],S(["Dyna Tree (Hoenn)"]))]);
+add(147,"미뇽","Dratini",null,[e("R","5-29",["surf","dim","maxY32"],OW(["Deep Dark"])),e("R","5-29",["sub","dim","maxY32"],OW(["Deep Dark"])),e("U","14-29",["sub","seeSky","maxY62"],S(RUINS)),e("U","5-30",["sub","indoor","sky","maxY62"],S(RUINS))]);
+add(148,"신뇽","Dragonair",null,[e("R","30-42",["surf","dim","maxY32"],OW(["Deep Dark"])),e("R","30-42",["sub","dim","maxY32"],OW(["Deep Dark"])),e("U","30-42",["sub","seeSky","maxY62"],S(RUINS)),e("U","30-42",["sub","indoor","sky","maxY62"],S(RUINS))]);
+add(149,"망나뇽","Dragonite",null,[e("R","55-70",["dim","maxY32","water"],OW(["Deep Dark"])),e("U","55-70",["sub","seeSky","maxY62"],S(RUINS)),e("U","55-70",["sub","indoor","sky","maxY62"],S(RUINS))]);
+add(150,"뮤츠","Mewtwo",null,[e("X","1",["special"],S(["Resurrection Machine"]))]);
+add(151,"뮤","Mew",null,[e("X","75-90",["special"],S(["Origin Temple (Kanto)"]))]);
+
+
+// ---- 2세대 (cobbleverse.wiki/spawns/gen2) ----
+const TAIGA=["Taiga","Snowy Taiga","Old Growth Pine Taiga","Old Growth Spruce Taiga","Grove","Bryce Canyon","Cloud Forest","Ice Marsh","Moonlight Grove","Moonlight Valley","Shield","Siberian Taiga","Yosemite Lowlands","Alpine Grove","Cold Shrubland","Siberian Grove","Snowy Shield","Wintry Forest","Wintry Lowlands"];
+const SENT=U_([...TAIGA,...PIDGEY,"Ice Spikes","Snowy Plains","Snowy Badlands"]);
+const LEDY=[...PIDGEY.filter(b=>b!=="Grove"),"Dark Forest","Pale Garden"];
+const SPIN=["Forest","Birch Forest","Dark Forest","Old Growth Birch Forest","Pale Garden","Forested Highlands","Mirage Isles","Temperate Highlands",...JUNGLE,"Deep Dark"];
+const DEEPO=["Deep Ocean","Deep Cold Ocean","Deep Frozen Ocean","Deep Lukewarm Ocean"];
+const TOGE=["Cherry Grove","Flower Forest","Blooming Valley","Cloud Forest","Lavender Forest","Lavender Valley","Sakura Grove","Sakura Valley","Amethyst Canyon","Amethyst Rainforest","Mirage Isles","Moonlight Grove","Moonlight Valley"];
+const NATU=["Badlands","Wooded Badlands","Eroded Badlands","Ashen Savanna","Red Oasis","Savanna Plateau","Blooming Plateau","Cherry Grove","Meadow","Arid Highlands","Yosemite Cliffs"];
+const MAREEP=[...PALDEA_T,...PLAINS2];
+const HOPPIP=U_([...PLAINS,...FLOWER]);
+const SW3B=["Swamp","Ice Marsh","Orchid Swamp"];
+const PWOOP=["Mangrove Swamp","Underground Jungle"];
+const MISD=["Dark Forest","Pale Garden",...SWAMP];
+const HSNE=["Meadow","Windswept Forest","Windswept Gravelly Hills","Windswept Hills","Windswept Savanna","Alpine Highlands","Blooming Valley","Forested Highlands","Snowy Slopes","Lavender Valley","Lush Valley","Sakura Valley","Temperate Highlands","Blooming Plateau","Caldera","Yosemite Cliffs"];
+const TEDDY=U_([...FOREST_G,"Meadow","Windswept Forest","Windswept Gravelly Hills","Windswept Hills","Windswept Savanna","Alpine Grove","Alpine Highlands","Snowy Slopes","Lush Valley","Arid Highlands","Savanna Slopes","Moonlight Valley","Blooming Plateau","Yosemite Lowlands","Caldera","Yosemite Cliffs",...TAIGA]);
+const VOLC=["Volcanic Crater","Volcanic Peaks"];
+const SWINUB=["Ice Spikes","Snowy Plains","Cold Shrubland","Snowy Badlands"];
+const LARV=GEO.filter(b=>b!=="Alpine Grove"&&b!=="Snowy Slopes");
+const OM=["Ocean Monument"], NETH={all:"nether",ex:[]}, END={all:"end",ex:[]};
+const SNUB={b:[...SAVANNA,"Plains","Sunflower Plains","Meadow","Steppe","Alpine Highlands","Blooming Plateau","Valley Clearing"],s:VILALL};
+
+[[152,"치코리타","Chikorita","5-32"],[153,"베이리프","Bayleef","16-41"],[154,"메가니움","Meganium","32-53"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("X",l,["sky"],B(FLOWER))]));
+[[155,"브케인","Cyndaquil","5-31","히스이 계열"],[156,"마그케인","Quilava","17-41","히스이 계열"],[157,"블레이범","Typhlosion","36-53","히스이"]].forEach(([d,k,n,l,f])=>{add(d,k,n,null,[e("X",l,["sky"],B(PIDGEY))]);add(d,k,n,f,[e("X",l,["clear","sky"],B(TAIGA)),e("X",l,[],B(["Crimson Forest"]))]);});
+[[158,"리아코","Totodile","5-31"],[159,"엘리게이","Croconaw","18-41"],[160,"장크로다일","Feraligatr","30-53"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("X",l,["sky"],B(SWAMP)),e("X",l,["sub","seeSky"],B(SWAMP)),e("X",l,["sub","indoor","sky"],B(SWAMP))]));
+add(161,"꼬리선","Sentret",null,[e("C","1-22",["sky"],B(SENT))]);
+add(162,"다꼬리","Furret",null,[e("C","15-42",["sky"],B(SENT))]);
+add(163,"부우부","Hoothoot",null,[e("C","1-26",["night","sky"],B([...FOREST_ALL,"Deep Dark"]))]);
+add(164,"야부엉","Noctowl",null,[e("C","20-45",["night","sky"],B([...FOREST_ALL,"#cobblemon:is_sky","Deep Dark"]))]);
+add(165,"레디바","Ledyba",null,[e("C","2-27",["clear","day","sky"],B(LEDY))]);
+add(166,"레디안","Ledian",null,[e("C","18-39",["clear","night","sky"],B(LEDY))]);
+[[167,"페이검","Spinarak","1-21"],[168,"아리아도스","Ariados","22-40"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["clear","night","sky"],B(SPIN)),e("C",l,["dim"],OW(["Deep Dark"])),e("C",l,["indoor","sky0","minY0"],OW(["Deep Dark"])),e("C",l,["indoor","cobweb"],S(MANSION))]));
+add(169,"크로뱃","Crobat",null,[e("C","41-54",["clear","night","sky"],B([...FOREST,...SWAMP3])),e("C","41-54",["dim","n025"],B([...FOREST,...SWAMP3])),e("C","41-54",["dim","d15"],OW(["Deep Dark","숲 계열","늪 계열"])),e("U","41-54",["indoor","sky0","d15"],OW(["Deep Dark","숲 계열","늪 계열"])),e("C","41-54",["clear","sky","n15"],B(DARK)),e("U","41-54",["dim"],B(["Deep Dark","Deep Caves"]))]);
+[[170,"초라기","Chinchou","8-33"],[171,"랜턴","Lanturn","27-46"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sub","seeSky","maxY48"],B(DEEPO)),e("C",l,["sub","indoor","sky","maxY48"],B(DEEPO)),e("C",l,["sub","indoor","subY"],S(SSC))]));
+add(172,"피츄","Pichu",null,[e("U","1-21",["sky","t5"],B(FOREST_G))]);
+add(172,"피츄","Pichu","알로라 계열",[e("U","16-32",["sky","t5"],B(["Beach"]))]);
+add(173,"삐","Cleffa",null,[e("U","1-22",["night","sky"],B(["Dripstone Caves",...MOUNT,"Amethyst Canyon","Amethyst Rainforest","Mirage Isles","Moonlight Grove"])),e("U","1-22",["dim"],B(["Dripstone Caves"]))]);
+add(174,"푸푸린","Igglybuff",null,[e("C","1-21",["sky","n15"],B(FLOWER)),e("C","1-21",["sky","n15"],B(PLAINS))]);
+add(175,"토게피","Togepi",null,[e("R","1-25",["clear","day","sky"],B(TOGE))]);
+add(176,"토게틱","Togetic",null,[e("R","20-41",["clear","day","sky"],B(TOGE))]);
+add(177,"네이티","Natu",null,[e("C","7-32",["day","sky"],B(NATU))]);
+add(178,"네이티오","Xatu",null,[e("C","25-47",["day","sky"],B(NATU))]);
+[[179,"메리프","Mareep","3-28"],[180,"보송송","Flaaffy","15-37"],[181,"전룡","Ampharos","30-51"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["sky","n025","t5"],B(MAREEP))]));
+add(182,"아르코","Bellossom",null,[e("C","35-49",["day","sky"],B(FLOWER)),e("C","35-49",["day","sky"],B(JUNGLE))]);
+add(182,"아르코","Bellossom","발렌시아",[e("C","35-49",["day","sky"],B(SAVANNA))]);
+add(183,"마릴","Marill",null,[e("C","14-25",["sky"],B(["River","Warm River"])),e("C","14-25",["surf","sky"],B(RIVERS))]);
+add(184,"마릴리","Azumarill",null,[e("U","18-42",["sky"],B(["River","Warm River"])),e("U","18-42",["surf","sky"],B(RIVERS))]);
+add(185,"꼬지모","Sudowoodo",null,[e("U","16-41",["clear","sky"],B(FOREST_G))]);
+add(186,"왕구리","Politoed",null,[e("C","34-50",["rain","sky"],B(SWAMP)),e("C","34-50",["sub","seeSky","lily"],B(SWAMP)),e("C","34-50",["rain","sky","water"],B(POLI)),e("C","34-50",["sub","seeSky"],B(POLI)),e("C","34-50",["dim"],B(LUSHC)),e("C","34-50",["sub","dim"],B(LUSHC)),e("C","34-50",["sub","indoor","sky","lily"],B(SWAMP)),e("C","34-50",["sub","indoor","sky"],B(POLI)),e("C","34-50",["dim","shipY"],S(LSC)),e("C","34-50",["sub","dim","shipY"],S(LSC))]);
+add(187,"통통코","Hoppip",null,[e("C","1-25",["clear","sky","n025"],B(HOPPIP))]);
+add(188,"두코","Skiploom",null,[e("C","18-34",["clear","sky","n025"],B(HOPPIP))]);
+add(189,"솜솜코","Jumpluff",null,[e("C","27-46",["sky","n025"],B(HOPPIP))]);
+add(190,"에이팜","Aipom",null,[e("C","11-36",["sky"],B(JUNGLE)),e("C","11-36",["dim","shipY"],S(LSC))]);
+add(191,"해너츠","Sunkern",null,[e("C","1-18",["sky","n025","sunflower"],B(["Sunflower Plains"])),e("C","1-18",["sky","n025","sunflower"],OW())]);
+add(192,"해루미","Sunflora",null,[e("C","13-43",["sky","n025","sunflower"],B(["Sunflower Plains"])),e("C","13-43",["sky","n025","sunflower"],OW())]);
+add(193,"왕자리","Yanma",null,[e("U","14-39",["surf","clear","day","sky"],B(["River","Swamp","Mangrove Swamp","Orchid Swamp"])),e("U","14-39",["surf","dim"],B(LUSHC)),e("U","14-39",["surf","dim","shipY"],S(LSC))]);
+add(194,"우파","Wooper",null,[e("C","1-21",["dim"],B(LUSHC)),e("C","1-21",["sub","dim"],B(LUSHC)),e("U","1-21",["dim","maxY62","water"],OW(["무성한 계열"])),e("U","1-21",["sub","dim","maxY62"],OW(["무성한 계열"])),e("C","1-21",["rain","sky"],B(SW3B)),e("C","1-21",["sub","seeSky"],B(SW3B)),e("C","1-21",["sub","indoor","sky"],B(SW3B)),e("C","1-21",["dim","shipY"],S(LSC)),e("C","1-21",["sub","dim","shipY"],S(LSC))]);
+add(194,"우파","Wooper","팔데아",[e("C","1-21",["sky"],B(PWOOP)),e("C","1-21",["sub","seeSky"],B(PWOOP)),e("U","1-21",["sky","water"],B(SAVANNA)),e("U","1-21",["sub","seeSky"],B(SAVANNA)),e("C","1-21",["sub","indoor","sky"],B(PWOOP)),e("U","1-21",["sub","indoor","sky"],B(SAVANNA))]);
+add(195,"누오","Quagsire",null,[e("C","20-43",["dim"],B(LUSHC)),e("C","20-43",["sub","dim"],B(LUSHC)),e("U","20-43",["dim","maxY62","water"],OW(["무성한 계열"])),e("U","20-43",["sub","dim","maxY62"],OW(["무성한 계열"])),e("C","20-43",["rain","sky"],B(SW3B)),e("C","20-43",["sub","seeSky"],B(SW3B)),e("C","20-43",["sub","indoor","sky"],B(SW3B)),e("C","20-43",["dim","shipY"],S(LSC)),e("C","20-43",["sub","dim","shipY"],S(LSC))]);
+add(196,"에브이","Espeon",null,[e("X","28-53",["sky"],B(MOUNT)),e("U","28-53",["day","sky"],OW()),e("U","28-53",["sky"],S(VILALL))]);
+add(197,"블래키","Umbreon",null,[e("X","28-53",["night"],B(DARK)),e("R","28-53",["day","sky"],OW()),e("U","28-53",["sky"],S(VILALL)),e("U","28-53",["indoor"],S(MANSION))]);
+add(198,"니로우","Murkrow",null,[e("C","16-41",["n15"],B(DARK)),e("C","16-41",["night"],B(U_([...SWAMP,...TAIGA])))]);
+add(199,"야도킹","Slowking",null,[e("C","37-49",["sky"],B(["Beach","Snowy Beach"]))]);
+add(199,"야도킹","Slowking","가라르",[e("C","37-49",["sky","water"],B(["Mushroom Fields"]))]);
+add(200,"무우마","Misdreavus",null,[e("C","19-44",["dim"],B(MISD)),e("C","19-44",["indoor","sky0"],B(MISD)),e("C","19-44",["night","sky"],B(SWAMP)),e("C","19-44",[],B(["Warped Forest"])),e("C","19-44",["indoor","shipY"],S(["Shipwreck Cove (All Types)"]))]);
+add(201,"안농","Unown","A~Z",[e("C","1-100",[],END),e("C","1-100",["minY48"],S(["Trail Ruins"]))]);
+add(201,"안농","Unown","!",[e("C","1-100",[],S(["Dawn Tower (End)"])),e("C","1-100",["maxY48"],S(["Trial Chambers"]))]);
+add(201,"안농","Unown","?",[e("C","1-100",[],S(["Dusk Tower (End)"])),e("C","1-100",["maxY48"],S(["Trial Chambers"]))]);
+add(202,"마자용","Wobbuffet",null,[e("R","15-41",["dim"],B(RAT))]);
+add(203,"키링키","Girafarig",null,[e("C","21-46",["sky","n025"],B(SAVANNA))]);
+add(204,"피콘","Pineco",null,[e("C","4-29",["sky"],B(TAIGA))]);
+add(205,"쏘콘","Forretress",null,[e("C","31-47",["sky"],B(TAIGA))]);
+add(206,"노고치","Dunsparce",null,[e("R","17-42",["indoor"],OW(["Deep Dark"])),e("R","17-42",[],B(LUSHC))]);
+add(207,"글라이거","Gligar",null,[e("U","18-43",["night"],B(BADLANDS)),e("C","18-43",[],B(["Basalt Deltas"]))]);
+add(208,"강철톤","Steelix",null,[e("U","34-51",["dim"],OW(["Deep Dark"])),e("U","34-51",[],B(["Basalt Deltas"]))]);
+add(209,"블루","Snubbull",null,[e("C","5-30",[],SNUB)]);
+add(210,"그랑블루","Granbull",null,[e("C","23-45",[],SNUB)]);
+add(211,"침바루","Qwilfish",null,[e("U","19-44",["sub","seeSky"],B(HORSEA)),e("C","19-44",["sub","seeSky","maxY62"],{b:WARMO,s:OM}),e("C","19-44",["sub"],B(HORSEA)),e("C","19-44",["sub","sky","maxY62"],{b:WARMO,s:OM}),e("U","19-44",["sub","indoor","subY"],{b:WARMO,s:SSC})]);
+add(211,"침바루","Qwilfish","히스이",[e("U","19-44",["sub","seeSky"],B(["Cold Ocean","Deep Cold Ocean"])),e("C","19-44",["sub","seeSky","maxY62"],{b:COLDO,s:OM}),e("U","19-44",["sub","indoor","sky"],B(["Cold Ocean","Deep Cold Ocean"])),e("C","19-44",["sub","indoor","sky","maxY62"],{b:COLDO,s:OM}),e("U","19-44",["sub","indoor","subY"],{b:["Cold Ocean","Deep Cold Ocean"],s:SSC})]);
+add(212,"핫삼","Scizor",null,[e("U","45-50",["day","sky"],B(JUNGLE))]);
+add(213,"단단지","Shuckle",null,[e("U","16-51",["dim"],B(LUSHC)),e("U","16-51",["dim","shipY"],S(LSC))]);
+add(214,"헤라크로스","Heracross",null,[e("R","25-50",["sky","twi5","nosacch"],B(FOREST)),e("U","25-50",["sky","twi5","nosacch"],B(JUNGLE)),e("U","25-50",["sky","twi5","sacch"],OW(["얼음 계열"]))]);
+add(215,"포푸니","Sneasel",null,[e("U","18-43",["d025"],B(TAIGA))]);
+add(215,"포푸니","Sneasel","히스이",[e("U","18-43",["sky","n025"],B(HSNE))]);
+[[216,"깜지곰","Teddiursa","8-33"],[217,"링곰","Ursaring","30-50"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("C",l,["minY48","nosacch"],B(TEDDY)),e("C",l,["sky","sacch"],OW())]));
+add(218,"마그마그","Slugma",null,[e("C","10-36",[],B(["Basalt Deltas","Nether Wastes"])),e("C","1-35",["inlava"],B(VOLC)),e("C","1-25",["inlava"],OW(["화산 계열"]))]);
+add(219,"마그카르고","Magcargo",null,[e("C","38-53",[],B(["Basalt Deltas","Nether Wastes"])),e("C","38-43",["inlava"],B(VOLC)),e("C","38-43",["inlava"],OW(["화산 계열"]))]);
+add(220,"꾸꾸리","Swinub",null,[e("C","1-25",["sky"],B(SWINUB))]);
+add(221,"메꾸리","Piloswine",null,[e("C","33-45",["sky"],B(SWINUB))]);
+add(222,"코산호","Corsola",null,[e("C","16-41",["floor","seeSky"],B(["Warm Ocean"])),e("U","16-41",["floor","seeSky","coral"],OW(["따뜻한 바다 계열"]))]);
+add(222,"코산호","Corsola","가라르",[e("U","16-41",[],B(["Beach","Snowy Beach"])),e("C","16-41",["deadcoral"],OW()),e("C","16-41",["floor","deadcoral"],OW()),e("U","16-41",["quartz"],NETH),e("U","16-41",[],B(["Soul Sand Valley"]))]);
+add(223,"총어","Remoraid",null,[e("C","5-30",["sub","seeSky"],B(OCEAN)),e("C","5-30",["sub","indoor","sky"],B(OCEAN)),e("C","5-30",["sub","indoor","subY"],S(SSC))]);
+add(224,"대포무노","Octillery",null,[e("C","25-48",["floor","seeSky"],B(OCEAN)),e("C","25-48",["floor","indoor","subY"],S(SSC))]);
+add(225,"딜리버드","Delibird",null,[e("U","8-33",["n025"],B(["Frozen Peaks","Jagged Peaks","Snowy Slopes","Stony Peaks","Rocky Mountains"]))]);
+add(226,"만타인","Mantine",null,[e("U","30-49",["sub","seeSky","minY48"],B(HORSEA)),e("U","30-49",["sub","indoor","sky","minY48"],B(HORSEA))]);
+add(227,"무장조","Skarmory",null,[e("R","22-47",["day","sky"],B([...BADLANDS,...DESERT]))]);
+add(228,"델빌","Houndour",null,[e("U","8-33",["sky","n15"],B(BADLANDS)),e("C","8-33",[],NETH),e("U","18-38",["night"],S(["Ruined Portal"]))]);
+add(229,"헬가","Houndoom",null,[e("U","24-50",["sky","n15"],B(BADLANDS)),e("C","24-50",[],NETH),e("U","34-60",["night"],S(["Ruined Portal"]))]);
+add(230,"킹드라","Kingdra",null,[e("C","39-54",["sub","seeSky"],B(HORSEA)),e("C","39-54",["sub","indoor","sky"],B(HORSEA)),e("C","39-54",["sub","indoor","subY"],S(SSC))]);
+add(231,"코코리","Phanpy",null,[e("C","8-33",["n025"],B(BADLANDS)),e("C","8-33",["n025"],B(SAVANNA))]);
+add(232,"코리갑","Donphan",null,[e("C","25-50",["sky","n025"],B(BADLANDS)),e("C","25-50",["sky","n025"],B(SAVANNA))]);
+add(233,"폴리곤2","Porygon2",null,[e("U","35-52",[],END)]);
+add(234,"노라키","Stantler",null,[e("C","22-47",["sky","n025"],B([...AVULPIX,"Ice Spikes","Snowy Plains","Snowy Badlands"]))]);
+add(235,"루브도","Smeargle",null,[e("R","1-25",["sky","n025"],S(VILALL)),e("C","10-35",["indoor","wool"],S(MANSION))]);
+add(236,"배루키","Tyrogue",null,[e("U","1-21",["sky","n025"],B(MOUNT))]);
+add(237,"카포에라","Hitmontop",null,[e("U","20-46",["sky","n025"],B(MOUNT))]);
+add(238,"뽀뽀라","Smoochum",null,[e("U","6-31",["sky","n025"],{b:FREEZE,s:["Village (Snowy)"]})]);
+add(239,"에레키드","Elekid",null,[e("U","11-36",["sky","t5"],B([...MOUNT,...PLAINS2]))]);
+add(240,"마그비","Magby",null,[e("C","11-36",["clear","sky","lava"],B(MOUNT.filter(b=>b!=="Volcanic Crater"))),e("C","11-36",["clear","sky"],B(VOLC)),e("C","11-36",[],B(["Basalt Deltas","Nether Wastes"]))]);
+add(241,"밀탱크","Miltank",null,[e("C","24-49",["sky","n025"],B(RAT))]);
+add(241,"밀탱크","Miltank","빨간 무시탱크",[e("C","24-49",["sky","n025"],B(["Mushroom Fields"]))]);
+add(241,"밀탱크","Miltank","갈색 무시탱크",[e("C","24-49",["sky","n025"],B(["Mushroom Fields"]))]);
+add(242,"해피너스","Blissey",null,[e("R","40-54",["sky","n025"],B([...PIDGEY,"Cloud Forest"])),e("R","40-54",["sky","n025"],S(VILALL))]);
+add(243,"라이코","Raikou",null,[e("X","60",["storm33"],S(["Burned Tower (Johto)"]))]);
+add(244,"앤테이","Entei",null,[e("X","60",["day33"],S(["Burned Tower (Johto)"]))]);
+add(245,"스이쿤","Suicune",null,[e("X","60",["rain33"],S(["Burned Tower (Johto)"]))]);
+[[246,"애버라스","Larvitar","5-30"],[247,"데기라스","Pupitar","30-54"],[248,"마기라스","Tyranitar","55-70"]].forEach(([d,k,n,l])=>add(d,k,n,null,[e("X",l,["sky"],B(LARV)),e("R",l,["dim"],B(GEO))]));
+add(249,"루기아","Lugia",null,[e("X","60-70",["special"],S(["Whirl Island (Johto)"]))]);
+add(250,"칠색조","Ho-Oh",null,[e("X","60-70",["special"],S(["Bell Tower (Johto)"]))]);
+add(251,"세레비","Celebi",null,[e("X","75-80",["special"],S(["Ilex Shrine (Johto)"]))]);
+// 출현 시점 안내 (LUMYVERSE 공식 사이트 안내: 칠색조, 루기아, 전설의 세 마리 개는 관동 시리즈를 끝내고 챔피언 그린을 이긴 뒤에만 나옴)
+Object.assign(UNLOCK,{243:"관동 시리즈 클리어(챔피언 그린 승리) 후",244:"관동 시리즈 클리어(챔피언 그린 승리) 후",245:"관동 시리즈 클리어(챔피언 그린 승리) 후",249:"관동 시리즈 클리어(챔피언 그린 승리) 후",250:"관동 시리즈 클리어(챔피언 그린 승리) 후"});
+
+const CATS=[
+["숲",{"Forest":"숲","Birch Forest":"자작나무 숲","Old Growth Birch Forest":"오래된 자작나무 숲","Flower Forest":"꽃 숲","Dark Forest":"어두운 숲","Pale Garden":"창백한 정원","Cherry Grove":"벚나무 숲","Grove":"산림","Lavender Forest":"라벤더 숲","Sakura Grove":"벚꽃 숲","Mirage Isles":"신기루 섬","Cloud Forest":"운무림","Moonlight Grove":"달빛 숲","Amethyst Rainforest":"자수정 우림","Taiga":"타이가","Old Growth Pine Taiga":"오래된 소나무 타이가","Old Growth Spruce Taiga":"오래된 가문비나무 타이가"}],
+["정글",{"Jungle":"정글","Sparse Jungle":"듬성듬성한 정글","Bamboo Jungle":"대나무 정글","Underground Jungle":"지하 정글"}],
+["평원과 골짜기",{"Plains":"평원","Sunflower Plains":"해바라기 평원","Meadow":"목초지","Brushland":"덤불 지대","Shrubland":"관목 지대","Steppe":"스텝","Valley Clearing":"골짜기 공터","Blooming Valley":"꽃피는 골짜기","Blooming Plateau":"꽃피는 고원","Lavender Valley":"라벤더 골짜기","Sakura Valley":"벚꽃 골짜기","Lush Valley":"무성한 골짜기","Moonlight Valley":"달빛 골짜기"}],
+["산과 고원",{"Windswept Hills":"바람이 부는 언덕","Windswept Gravelly Hills":"바람이 부는 자갈 언덕","Windswept Forest":"바람이 부는 숲","Alpine Grove":"고산 산림","Alpine Highlands":"고산 고원","Forested Highlands":"숲 고원","Temperate Highlands":"온대 고원","Arid Highlands":"건조한 고원","Stony Peaks":"돌 봉우리","Rocky Mountains":"바위 산맥","Yosemite Lowlands":"요세미티 저지대","Yosemite Cliffs":"요세미티 절벽","Caldera":"칼데라","Volcanic Crater":"화산 분화구","Volcanic Peaks":"화산 봉우리","Shield":"순상지","Amethyst Canyon":"자수정 협곡"}],
+["사바나와 악지",{"Savanna":"사바나","Savanna Plateau":"사바나 고원","Windswept Savanna":"바람이 부는 사바나","Savanna Slopes":"사바나 비탈","Ashen Savanna":"잿빛 사바나","Hot Shrubland":"뜨거운 관목 지대","Badlands":"악지","Wooded Badlands":"나무가 우거진 악지","Eroded Badlands":"침식된 악지","Red Oasis":"붉은 오아시스","Bryce Canyon":"브라이스 협곡"}],
+["사막",{"Desert":"사막","Ancient Sands":"고대 모래","Desert Canyon":"사막 협곡","Desert Oasis":"사막 오아시스","Lush Desert":"무성한 사막","Sandstone Valley":"사암 골짜기"}],
+["눈과 얼음",{"Snowy Plains":"눈 덮인 평원","Ice Spikes":"역고드름","Snowy Taiga":"눈 덮인 타이가","Snowy Slopes":"눈 덮인 비탈","Frozen Peaks":"얼어붙은 봉우리","Jagged Peaks":"뾰족한 봉우리","Snowy Beach":"눈 덮인 해변","Snowy Badlands":"눈 덮인 악지","Glacial Chasm":"빙하 협곡","Siberian Taiga":"시베리아 타이가","Siberian Grove":"시베리아 산림","Ice Marsh":"얼음 습지","Snowy Cherry Grove":"눈 덮인 벚나무 숲","Cold Shrubland":"추운 관목 지대","Snowy Shield":"눈 덮인 순상지","Wintry Forest":"겨울 숲","Wintry Lowlands":"겨울 저지대","Frozen River":"얼어붙은 강"}],
+["물가와 늪",{"River":"강","Warm River":"따뜻한 강","Swamp":"늪","Mangrove Swamp":"맹그로브 늪","Orchid Swamp":"난초 늪","Beach":"해변","Stony Shore":"돌 해안","White Cliffs":"하얀 절벽","Mushroom Fields":"버섯 들판"}],
+["바다",{"Ocean":"바다","Deep Ocean":"깊은 바다","Warm Ocean":"따뜻한 바다","Deep Warm Ocean":"깊은 따뜻한 바다","Lukewarm Ocean":"미지근한 바다","Deep Lukewarm Ocean":"깊은 미지근한 바다","Cold Ocean":"차가운 바다","Deep Cold Ocean":"깊은 차가운 바다","Frozen Ocean":"얼어붙은 바다","Deep Frozen Ocean":"깊은 얼어붙은 바다"}],
+["동굴과 지하",{"Lush Caves":"무성한 동굴","Dripstone Caves":"점적석 동굴","Deep Dark":"깊은 어둠","Deep Caves":"깊은 동굴","Fungal Caves":"균류 동굴"}],
+["네더",{"Nether Wastes":"네더 황무지","Crimson Forest":"진홍빛 숲","Soul Sand Valley":"영혼 모래 골짜기","Basalt Deltas":"현무암 삼각주","Warped Forest":"뒤틀린 숲"}],
+["기타",{"#cobblemon:is_sky":"높은 하늘 (is_sky 태그)"}]
+];
+const STRUCT_KO={"Village (Plains)":"마을 (평원)","Village (Desert)":"마을 (사막)","Village (Taiga)":"마을 (타이가)","Village (Snowy)":"마을 (눈)","Village (Savanna)":"마을 (사바나)","Village (All Types)":"마을 (모든 종류)","Woodland Mansion":"삼림 대저택","Pillager Outpost":"약탈자 전초기지","Swamp Hut":"늪지 오두막","Crown Spire":"크라운 첨탑","Lush Shipwreck Cove":"무성한 난파선 만","Submerged Shipwreck Cove":"수중 난파선 만","Cold Ocean Ruins":"차가운 바다 폐허","Warm Ocean Ruins":"따뜻한 바다 폐허","Articuno Tower (Kanto)":"프리져 탑 (관동)","Zapdos Tower (Kanto)":"썬더 탑 (관동)","Moltres Tower (Nether)":"파이어 탑 (네더)","Dyna Tree (Hoenn)":"다이나 트리 (호연)","Resurrection Machine":"복원 장치","Origin Temple (Kanto)":"기원의 신전 (관동)","Shipwreck Cove (All Types)":"난파선 만 (모든 종류)","Dawn Tower (End)":"새벽의 탑 (엔드)","Dusk Tower (End)":"황혼의 탑 (엔드)","Trail Ruins":"오솔길 폐허","Trial Chambers":"시련의 회당","Ocean Monument":"바다 유적","Ruined Portal":"폐허가 된 차원문","Burned Tower (Johto)":"불탄 탑 (성도)","Whirl Island (Johto)":"소용돌이 섬 (성도)","Bell Tower (Johto)":"방울탑 (성도)","Ilex Shrine (Johto)":"너도밤나무숲 사당 (성도)"};
+
+
+// 원작 종족값 [HP, 공격, 방어, 특수공격, 특수방어, 스피드]
+const STAT_RAW=`45 49 49 65 65 45|60 62 63 80 80 60|80 82 83 100 100 80|39 52 43 60 50 65|58 64 58 80 65 80|78 84 78 109 85 100|44 48 65 50 64 43|59 63 80 65 80 58|79 83 100 85 105 78|45 30 35 20 20 45|50 20 55 25 25 30|60 45 50 90 80 70|40 35 30 20 20 50|45 25 50 25 25 35|65 90 40 45 80 75|40 45 40 35 35 56|63 60 55 50 50 71|83 80 75 70 70 101|30 56 35 25 35 72|55 81 60 50 70 97|40 60 30 31 31 70|65 90 65 61 61 100|35 60 44 40 54 55|60 95 69 65 79 80|35 55 40 50 50 90|60 90 55 90 80 110|50 75 85 20 30 40|75 100 110 45 55 65|55 47 52 40 40 41|70 62 67 55 55 56|90 92 87 75 85 76|46 57 40 40 40 50|61 72 57 55 55 65|81 102 77 85 75 85|70 45 48 60 65 35|95 70 73 95 90 60|38 41 40 50 65 65|73 76 75 81 100 100|115 45 20 45 25 20|140 70 45 85 50 45|40 45 35 30 40 55|75 80 70 65 75 90|45 50 55 75 65 30|60 65 70 85 75 40|75 80 85 110 90 50|35 70 55 45 55 25|60 95 80 60 80 30|60 55 50 40 55 45|70 65 60 90 75 90|10 55 25 35 45 95|35 100 50 50 70 120|40 45 35 40 40 90|65 70 60 65 65 115|50 52 48 65 50 55|80 82 78 95 80 85|40 80 35 35 45 70|65 105 60 60 70 95|55 70 45 70 50 60|90 110 80 100 80 95|40 50 40 40 40 90|65 65 65 50 50 90|90 95 95 70 90 70|25 20 15 105 55 90|40 35 30 120 70 105|55 50 45 135 95 120|70 80 50 35 35 35|80 100 70 50 60 45|90 130 80 65 85 55|50 75 35 70 30 40|65 90 50 85 45 55|80 105 65 100 70 70|40 40 35 50 100 70|80 70 65 80 120 100|40 80 100 30 30 20|55 95 115 45 45 35|80 120 130 55 65 45|50 85 55 65 65 90|65 100 70 80 80 105|90 65 65 40 40 15|95 75 110 100 80 30|25 35 70 95 55 45|50 60 95 120 70 70|52 90 55 58 62 60|35 85 45 35 35 75|60 110 70 60 60 110|65 45 55 45 70 45|90 70 80 70 95 70|80 80 50 40 50 25|105 105 75 65 100 50|30 65 100 45 25 40|50 95 180 85 45 70|30 35 30 100 35 80|45 50 45 115 55 95|60 65 60 130 75 110|35 45 160 30 45 70|60 48 45 43 90 42|85 73 70 73 115 67|30 105 90 25 25 50|55 130 115 50 50 75|40 30 50 55 55 100|60 50 70 80 80 150|60 40 80 60 45 40|95 95 85 125 75 55|50 50 95 40 50 35|60 80 110 50 80 45|50 120 53 35 110 87|50 105 79 35 110 76|90 55 75 60 75 30|40 65 95 60 45 35|65 90 120 85 70 60|80 85 95 30 30 25|105 130 120 45 45 40|250 5 5 35 105 50|65 55 115 100 40 60|105 95 80 40 80 90|30 40 70 70 25 60|55 65 95 95 45 85|45 67 60 35 50 63|80 92 65 65 80 68|30 45 55 70 55 85|60 75 85 100 85 115|40 45 65 100 120 90|70 110 80 55 80 105|65 50 35 115 95 95|65 83 57 95 85 105|65 95 57 100 85 93|65 125 100 55 70 85|75 100 95 40 70 110|20 10 55 15 20 80|95 125 79 60 100 81|130 85 80 85 95 60|48 48 48 48 48 48|55 55 50 45 65 55|130 65 60 110 95 65|65 65 60 110 95 130|65 130 60 95 110 65|65 60 70 85 75 40|35 40 100 90 55 35|70 60 125 115 70 55|30 80 90 55 45 55|60 115 105 65 70 80|80 105 65 60 75 130|160 110 65 65 110 30|90 85 100 95 125 85|90 90 85 125 90 100|90 100 90 125 85 90|41 64 45 50 50 50|61 84 65 70 70 70|91 134 95 100 100 80|106 110 90 154 90 130|100 100 100 100 100 100|45 49 65 49 65 45|60 62 80 63 80 60|80 82 100 83 100 80|39 52 43 60 50 65|58 64 58 80 65 80|78 84 78 109 85 100|50 65 64 44 48 43|65 80 80 59 63 58|85 105 100 79 83 78|35 46 34 35 45 20|85 76 64 45 55 90|60 30 30 36 56 50|100 50 50 86 96 70|40 20 30 40 80 55|55 35 50 55 110 85|40 60 40 40 40 30|70 90 70 60 70 40|85 90 80 70 80 130|75 38 38 56 56 67|125 58 58 76 76 67|20 40 15 35 35 60|50 25 28 45 55 15|90 30 15 40 20 15|35 20 65 40 65 20|55 40 85 80 105 40|40 50 45 70 45 70|65 75 70 95 70 95|55 40 40 65 45 35|70 55 55 80 60 45|90 75 85 115 90 55|75 80 95 90 100 50|70 20 50 20 50 40|100 50 80 60 80 50|70 100 115 30 65 30|90 75 75 90 100 70|35 35 40 35 55 50|55 45 50 45 65 80|75 55 70 55 95 110|55 70 55 40 55 85|30 30 30 30 30 30|75 75 55 105 85 30|65 65 45 75 45 95|55 45 45 25 25 15|95 85 85 65 65 35|65 65 60 130 95 110|95 65 110 60 130 65|60 85 42 85 42 91|95 75 80 100 110 30|60 60 60 85 85 85|48 72 48 72 48 48|190 33 58 33 58 33|70 80 65 90 65 85|50 65 90 35 35 15|75 90 140 60 60 40|100 70 70 65 65 45|65 75 105 35 65 85|75 85 200 55 65 30|60 80 50 40 40 30|90 120 75 60 60 45|65 95 85 55 55 85|70 130 100 55 80 65|20 10 230 10 230 5|80 125 75 40 95 85|55 95 55 35 75 115|60 80 50 50 50 40|90 130 75 75 75 55|40 40 40 70 40 20|60 50 120 90 80 30|50 50 40 30 30 50|100 100 80 60 60 50|65 55 95 65 95 35|35 65 35 65 35 65|75 105 75 105 75 45|45 55 45 65 45 75|85 40 70 80 140 70|65 80 140 40 70 70|45 60 30 80 50 65|75 90 50 110 80 95|75 95 95 95 95 85|90 60 60 40 40 40|90 120 120 60 60 50|85 80 90 105 95 60|73 95 62 85 65 85|55 20 35 20 45 75|35 35 35 35 35 35|50 95 95 35 110 70|45 30 15 85 65 65|45 63 37 65 55 95|45 75 37 70 55 83|95 80 105 40 70 100|255 10 10 75 135 55|90 85 75 115 100 115|115 115 85 90 75 100|100 75 115 90 115 85|50 64 50 45 50 41|70 84 70 65 70 51|100 134 110 95 100 61|106 90 130 90 154 110|106 130 90 110 154 90|100 100 100 100 100 100`;
+const BASE={};STAT_RAW.split("|").forEach((s,i)=>BASE[i+1]=s.trim().split(/\s+/).map(Number));
+const sv=s=>s.split(" ").map(Number);
+// 리전폼 종족값 (같은 종족값인 폼은 기본값 사용)
+const FORM_STATS={
+"26|알로라":sv("60 85 50 95 85 110"),"20|알로라":sv("75 71 70 40 80 77"),"27|알로라":sv("50 75 90 10 35 40"),"28|알로라":sv("75 100 120 25 65 65"),
+"38|알로라":sv("73 67 75 81 100 109"),"50|알로라":sv("10 55 30 35 45 90"),"51|알로라":sv("35 100 60 50 70 110"),
+"52|알로라":sv("40 35 35 50 40 90"),"53|알로라":sv("65 60 60 75 65 115"),"52|가라르":sv("50 65 55 40 40 40"),
+"80|가라르":sv("95 100 95 100 70 30"),"83|가라르":sv("52 95 55 58 62 55"),"103|알로라":sv("95 105 85 125 75 45"),
+"122|가라르":sv("50 65 65 90 90 100"),"144|가라르":sv("90 85 85 125 100 95"),"145|가라르":sv("90 125 90 85 90 100"),"146|가라르":sv("90 85 90 100 125 90"),
+"58|히스이":sv("60 75 45 65 50 55"),"59|히스이":sv("95 115 80 95 80 90"),"157|히스이":sv("73 84 78 119 85 95"),
+"128|팔데아 컴뱃종":sv("75 110 105 30 70 100"),"128|팔데아 블레이즈종":sv("75 110 105 30 70 100"),"128|팔데아 워터종":sv("75 110 105 30 70 100"),
+"222|가라르":sv("60 55 100 65 100 30")};
+// 메가진화 종족값
+const MEGA={3:[["메가 이상해꽃","80 100 123 122 120 80"]],6:[["메가 리자몽 X","78 130 111 130 85 100"],["메가 리자몽 Y","78 104 78 159 115 100"]],9:[["메가 거북왕","79 103 120 135 115 78"]],
+15:[["메가 독침붕","65 150 40 15 80 145"]],18:[["메가 피죤투","83 80 80 135 80 121"]],65:[["메가 후딘","55 50 65 175 105 150"]],80:[["메가 야도란","95 75 180 130 80 30"]],
+94:[["메가 팬텀","60 65 80 170 95 130"]],115:[["메가 캥카","105 125 100 60 100 100"]],127:[["메가 쁘사이저","65 155 120 65 90 105"]],130:[["메가 갸라도스","95 155 109 70 130 81"]],
+142:[["메가 프테라","80 135 85 70 95 150"]],150:[["메가 뮤츠 X","106 190 100 154 100 130"],["메가 뮤츠 Y","106 150 70 194 120 140"]],
+181:[["메가 전룡","90 95 105 165 110 45"]],208:[["메가 강철톤","75 125 230 55 95 30"]],212:[["메가 핫삼","70 150 140 65 100 75"]],214:[["메가 헤라크로스","80 185 115 40 105 75"]],
+229:[["메가 헬가","75 90 90 140 90 115"]],248:[["메가 마기라스","100 164 150 95 120 71"]]};
+Object.values(MEGA).forEach(a=>a.forEach(m=>m[1]=sv(m[1])));
+
+
+const RAR={C:{ko:"흔함",cls:"r-c"},U:{ko:"드묾",cls:"r-u"},R:{ko:"레어",cls:"r-r"},X:{ko:"울트라 레어",cls:"r-x"}};
+const RORDER=["C","U","R","X"];
+const BKO={},BCAT={};CATS.forEach(([c,o])=>Object.entries(o).forEach(([en,ko])=>{BKO[en]=ko;BCAT[en]=c;}));
+const NETHER=new Set(Object.keys(CATS.find(c=>c[0]==="네더")[1]));
+const ALLKO={ow:"오버월드 어디서나",nether:"네더 어디서나",end:"엔드 어디서나"};
+const state={loc:null,rar:new Set(),q:"",gen:0};
+const GENS=[[1,151,"관동"],[152,251,"성도"],[252,386,"호연"],[387,493,"신오"],[494,649,"하나"],[650,721,"칼로스"],[722,809,"알로라"],[810,905,"가라르"],[906,1025,"팔데아"]];
+const genOf=d=>GENS.findIndex(g=>d>=g[0]&&d<=g[1])+1;
+const REG={"Kanto":"관동","Johto":"성도","Hoenn":"호연","Sinnoh":"신오","Nether":"네더","End":"엔드"};
+function notesFor(p){const n=[];if(UNLOCK[p.d])n.push(UNLOCK[p.d]);const regs=new Set();let sp=false;p.entries.forEach(e=>{if(e.c.includes("특수 조우"))sp=true;(e.s||[]).forEach(s=>{const m=s.match(/\((Kanto|Johto|Hoenn|Sinnoh|Nether|End)\)$/);if(m)regs.add(REG[m[1]]);});});regs.forEach(r=>n.push(r+" 전용 구조물"));if(sp)n.push("특수 조우");return n;}
+const CHO="ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+const cho=s=>[...s].map(ch=>{const c=ch.charCodeAt(0)-44032;return c>=0&&c<11172?CHO[Math.floor(c/588)]:ch;}).join("");
+const isCho=s=>/^[ㄱ-ㅎ\s]+$/.test(s);
+P.sort((a,b)=>a.d-b.d||(a.form?1:0)-(b.form?1:0));
+P.forEach((p,i)=>{p.i=i;p.notes=notesFor(p);p.key=(p.ko+(p.form||"")+p.en).toLowerCase();p.cho=cho(p.ko+(p.form||""));});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function locOK(e,loc){
+ if(!loc)return true;
+ if(loc.t==="b"){const n=loc.v;
+  if(e.b&&e.b.includes(n))return true;
+  if(e.all==="ow"&&!NETHER.has(n)&&!(e.ex||[]).includes(n))return true;
+  if(e.all==="nether"&&NETHER.has(n))return true;
+  return false;}
+ if(loc.t==="s")return !!(e.s&&e.s.includes(loc.v));
+ if(loc.t==="a")return e.all===loc.v;
+ return true;}
+function matchEntries(p,loc,rar){return p.entries.filter(e=>(rar.size===0||rar.has(e.r))&&locOK(e,loc));}
+function searchOK(p,q){if(!q)return true;const s=q.toLowerCase().trim();if(!s)return true;
+ if(/^\d+$/.test(s))return p.d===+s;
+ if(isCho(s))return p.cho.includes(s.replace(/\s/g,""));
+ return p.key.includes(s.replace(/\s/g,""))||p.key.replace(/\s/g,"").includes(s.replace(/\s/g,""));}
+
+function placeHTML(e){
+ const parts=[];
+ if(e.all){let t=ALLKO[e.all];if(e.ex&&e.ex.length)t+=` <span class="ex">(제외: ${e.ex.map(x=>esc(BKO[x]||x)).join(", ")})</span>`;parts.push(`<span class="pl all">${t}</span>`);}
+ (e.s||[]).forEach(s=>parts.push(`<span class="pl st">${esc(STRUCT_KO[s]||s)}</span>`));
+ const b=(e.b||[]);
+ if(b.length){const shown=b.slice(0,4).map(x=>`<span class="pl">${esc(BKO[x]||x)}</span>`).join("");
+  if(b.length>4){parts.push(shown+`<details class="more"><summary>외 ${b.length-4}곳</summary>${b.slice(4).map(x=>`<span class="pl">${esc(BKO[x]||x)}</span>`).join("")}</details>`);}
+  else parts.push(shown);}
+ return parts.join("");}
+
+function rowHTML(p,ents){
+ const rs=RORDER.filter(r=>ents.some(e=>e.r===r));
+ const lines=ents.map(e=>`<li class="ent"><span class="dot ${RAR[e.r].cls}" title="${RAR[e.r].ko}"></span><div class="ent-body"><div class="ent-top"><b>Lv ${esc(e.lv)}</b>${e.c.map(c=>`<span class="cond">${esc(c)}</span>`).join("")}</div><div class="places">${placeHTML(e)}</div></div></li>`).join("");
+ return `<tr><td class="c-no">${String(p.d).padStart(4,"0")}</td><td class="c-name"><button type="button" class="nm" data-i="${p.i}"><span class="ko">${esc(p.ko)}</span>${p.form?`<span class="form">${esc(p.form)}</span>`:""}<span class="en">${esc(p.en)}</span></button>${p.notes.map(t=>`<span class="note">${esc(t)}</span>`).join("")}</td><td class="c-rar">${rs.map(r=>`<span class="badge ${RAR[r].cls}">${RAR[r].ko}</span>`).join("")}</td><td class="c-spawn"><ul>${lines}</ul></td></tr>`;}
+
+const SPECIES=new Set(P.map(p=>p.d)).size;
+document.querySelector(".brand p").textContent=`${SPECIES}종 수록, COBBLEVERSE 공식 위키 기준`;
+function render(){
+ const tb=document.getElementById("rows");let n=0,html="";const sp=new Set();
+ for(const p of P){if(state.gen&&genOf(p.d)!==state.gen)continue;if(!searchOK(p,state.q))continue;const ents=matchEntries(p,state.loc,state.rar);if(!ents.length)continue;n++;sp.add(p.d);html+=rowHTML(p,ents);}
+ tb.innerHTML=html;
+ const emp=document.getElementById("empty");emp.hidden=n>0;emp.textContent=(state.gen&&!P.some(p=>genOf(p.d)===state.gen))?`${state.gen}세대는 아직 추가하지 않았어요.`:"조건에 맞는 포켓몬이 없어요. 등급이나 바이옴 선택을 줄여 보세요.";
+ const where=state.loc?(state.loc.t==="b"?BKO[state.loc.v]:state.loc.t==="s"?STRUCT_KO[state.loc.v]:ALLKO[state.loc.v]):"모든 장소";
+ const rt=state.rar.size?RORDER.filter(r=>state.rar.has(r)).map(r=>RAR[r].ko).join(", "):"모든 등급";
+ const gt=state.gen?`${state.gen}세대, `:"";document.getElementById("status").textContent=`${gt}${where}, ${rt}: ${sp.size}종 (${n}줄)`;
+ document.getElementById("clearLoc").hidden=!state.loc;
+ document.querySelectorAll(".loc").forEach(el=>{const on=state.loc&&el.dataset.t===state.loc.t&&el.dataset.v===state.loc.v;el.classList.toggle("on",!!on);el.setAttribute("aria-pressed",on?"true":"false");});
+ document.querySelectorAll(".ore").forEach(el=>{const on=state.rar.has(el.dataset.r);el.classList.toggle("on",on);el.setAttribute("aria-pressed",on?"true":"false");});
+ const pick=document.getElementById("pickLabel");if(pick)pick.textContent=state.loc?where:"바이옴 고르기";}
+
+function countFor(loc){const s=new Set();P.forEach(p=>{if(p.entries.some(e=>locOK(e,loc)))s.add(p.d);});return s.size;}
+function buildSide(){
+ const side=document.getElementById("biomes");let h="";
+ const filt=document.getElementById("bfilter").value.trim();
+ const fm=(ko,en)=>!filt||ko.includes(filt)||en.toLowerCase().includes(filt.toLowerCase())||(isCho(filt)&&cho(ko).includes(filt.replace(/\s/g,"")));
+ const btn=(t,v,ko,en)=>`<button type="button" class="loc" data-t="${t}" data-v="${esc(v)}"><span class="lk">${esc(ko)}</span><em>${countFor({t,v})}</em>${en?`<small>${esc(en)}</small>`:""}</button>`;
+ const sp=[["a","ow",ALLKO.ow,""],["a","nether",ALLKO.nether,""],["a","end",ALLKO.end,""]].filter(x=>fm(x[2],x[3]));
+ if(sp.length)h+=`<section><h3>어디서나</h3>${sp.map(x=>btn(...x)).join("")}</section>`;
+ CATS.forEach(([c,o])=>{const items=Object.entries(o).filter(([en,ko])=>fm(ko,en)).sort((a,b)=>a[1].localeCompare(b[1],"ko"));if(items.length)h+=`<section><h3>${c}</h3>${items.map(([en,ko])=>btn("b",en,ko,en)).join("")}</section>`;});
+ const st=Object.entries(STRUCT_KO).filter(([en,ko])=>fm(ko,en));if(st.length)h+=`<section><h3>구조물</h3>${st.map(([en,ko])=>btn("s",en,ko,en)).join("")}</section>`;
+ side.innerHTML=h||`<p class="none">"${esc(filt)}"에 맞는 바이옴이 없어요.</p>`;render();}
+
+document.addEventListener("click",ev=>{
+ const l=ev.target.closest(".loc");if(l){const nl={t:l.dataset.t,v:l.dataset.v};state.loc=(state.loc&&state.loc.t===nl.t&&state.loc.v===nl.v)?null:nl;render();const d=document.getElementById("pick");if(d&&window.matchMedia("(max-width: 860px)").matches)d.open=false;return;}
+ const o=ev.target.closest(".ore");if(o){const r=o.dataset.r;state.rar.has(r)?state.rar.delete(r):state.rar.add(r);render();return;}
+ if(ev.target.closest("#clearLoc")){state.loc=null;render();}
+ if(ev.target.closest("#clearAll")){state.loc=null;state.rar.clear();state.q="";state.gen=0;document.getElementById("q").value="";document.getElementById("gen").value="0";render();}
+ const nm=ev.target.closest(".nm");if(nm){openDetail(P[+nm.dataset.i]);return;}
+ if(ev.target.closest("#megaKey")){cycleMega();return;}
+ if(ev.target.closest("#closeDlg")){document.getElementById("dlg").close();}});
+document.getElementById("gen").addEventListener("change",e=>{state.gen=+e.target.value;render();});
+document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value;render();});
+document.getElementById("bfilter").addEventListener("input",buildSide);
+document.addEventListener("keydown",e=>{if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();document.getElementById("q").focus();}});
+if(window.matchMedia("(max-width: 860px)").matches)document.getElementById("pick").open=false;
+buildSide();
+
+const SLABEL=["체력","공격","방어","특수공격","특수방어","스피드"];
+let cur=null,megaIdx=-1;
+function baseOf(p){return FORM_STATS[p.d+"|"+p.form]||BASE[p.d];}
+function megasOf(p){return p.form?[]:(MEGA[p.d]||[]);}
+function drawStats(){
+ const p=cur,base=baseOf(p),ms=megasOf(p),m=megaIdx>=0?ms[megaIdx]:null,st=m?m[1]:base;
+ const box=document.getElementById("stats");
+ box.classList.toggle("mega",!!m);
+ box.innerHTML=SLABEL.map((l,i)=>{const v=st[i],d=v-base[i];return `<div class="srow"><span class="sl">${l}</span><span class="sv">${v}${m&&d?`<em class="${d>0?"up":"dn"}">${d>0?"+":""}${d}</em>`:""}</span><span class="track"><span class="fill" style="width:${Math.min(100,v/255*100).toFixed(1)}%"></span></span></div>`;}).join("")+`<div class="srow total"><span class="sl">합계</span><span class="sv">${st.reduce((a,b)=>a+b,0)}</span><span></span></div>`;
+ const k=document.getElementById("megaKey"),kl=document.getElementById("megaLabel");
+ k.disabled=!ms.length;k.setAttribute("aria-pressed",m?"true":"false");k.classList.toggle("on",!!m);
+ kl.textContent=!ms.length?"메가진화 없음":m?m[0]:(ms.length>1?"메가진화 ("+ms.length+"가지)":"메가진화");
+ document.getElementById("dTitle").textContent=m?m[0]:p.ko;
+}
+function cycleMega(){const ms=megasOf(cur);if(!ms.length)return;megaIdx=megaIdx+1>=ms.length?-1:megaIdx+1;drawStats();}
+function openDetail(p){cur=p;megaIdx=-1;
+ document.getElementById("dNo").textContent="No."+String(p.d).padStart(4,"0")+"  "+genOf(p.d)+"세대 "+GENS[genOf(p.d)-1][2];
+ document.getElementById("dSub").innerHTML=(p.form?`<span class="form">${esc(p.form)}</span>`:"")+`<span class="en">${esc(p.en)}</span>`;
+ const rs=RORDER.filter(r=>p.entries.some(e=>e.r===r));
+ document.getElementById("dRar").innerHTML=rs.map(r=>`<span class="badge ${RAR[r].cls}">${RAR[r].ko}</span>`).join("")+p.notes.map(t=>`<span class="note">${esc(t)}</span>`).join("");
+ drawStats();document.getElementById("dlg").showModal();}
+
+</script>
+</body>
+</html>
