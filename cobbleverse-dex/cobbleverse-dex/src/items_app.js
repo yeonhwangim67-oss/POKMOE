@@ -61,7 +61,7 @@ function setTab(t){
  document.querySelectorAll(".tab").forEach(b=>{const on=b.dataset.tab===t;b.classList.toggle("on",on);b.setAttribute("aria-selected",on?"true":"false");});
  document.getElementById("pokeView").hidden=items;document.getElementById("itemView").hidden=!items;
  document.querySelector(".gen").hidden=items;document.querySelector(".search").hidden=items;
- document.querySelector(".brand p").textContent=items?`아이템 ${ITEMS.length}개 수록, 코블몬 공식 위키·LUMYVERSE 기준`:`${SPECIES}종 수록, COBBLEVERSE 공식 위키 기준`;
+ document.querySelector(".brand p").textContent=items?`아이템 ${ITEMS.length}개 수록, 코블몬 공식 위키·LUMYVERSE 기준`:`${SPECIES}종 수록, COBBLEVERSE 모드팩 데이터 기준`;
  try{localStorage.setItem("dexTab",t);}catch(e){}}
 document.addEventListener("click",ev=>{
  const tb=ev.target.closest(".tab");if(tb){setTab(tb.dataset.tab);return;}

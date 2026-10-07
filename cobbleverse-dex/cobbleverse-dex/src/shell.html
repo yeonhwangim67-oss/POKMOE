@@ -246,6 +246,7 @@ dialog{max-height:calc(100vh - 24px);overflow:auto}
 .ditem{border:0;background:none;padding:0;cursor:pointer;font-weight:600;text-align:left;flex:1;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
 .ditem:hover{text-decoration-color:var(--focus)}
 .dnote{font-size:12px;color:var(--muted);margin:6px 0 0}
+.dsub{font-size:13px;margin:10px 0 6px;font-weight:600}
 </style>
 </head>
 <body>
@@ -270,7 +271,7 @@ dialog{max-height:calc(100vh - 24px);overflow:auto}
   <p class="hint">바이옴과 등급을 같이 고르면 그 바이옴에서 그 등급으로 나오는 포켓몬만 보여요. 등급은 여러 개를 같이 고를 수 있어요.</p>
   <div class="tablewrap"><table><thead><tr><th scope="col">번호</th><th scope="col">포켓몬</th><th scope="col">등급</th><th scope="col">출현 정보</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" hidden>조건에 맞는 포켓몬이 없어요. 등급이나 바이옴 선택을 줄여 보세요.</div></div>
   <footer>
-   출현 데이터는 COBBLEVERSE 공식 위키(cobbleverse.wiki)의 세대별 스폰 페이지를 옮긴 거예요. 주황색 점선 표시는 잡을 수 있는 시점이나 장소에 제한이 있다는 뜻이에요. 일부 전설의 출현 시점은 LUMYVERSE 공식 사이트 안내를 따랐어요. 포켓몬, 바이옴, 구조물 이름은 한국어로 옮겼고 영어 원래 이름을 같이 적었어요.
+   출현 데이터는 COBBLEVERSE 모드팩(1.7.42)에 실제로 들어 있는 출현 데이터(데이터팩 COBBLEVERSE-DP-v31)를 옮긴 거예요. 낚시로 나오는 출현은 빼고, 낚시로만 나오는 빈티나·밀로틱만 넣었어요. 주황색 점선 표시는 잡을 수 있는 시점이나 장소에 제한이 있다는 뜻이에요. 일부 전설의 출현 시점은 LUMYVERSE 공식 사이트 안내를 따랐어요. 포켓몬, 바이옴, 구조물 이름은 한국어로 옮겼고 영어 원래 이름을 같이 적었어요.
    "오버월드 어디서나" 항목은 특정 바이옴을 골라도 함께 보여요. 위키에 "숲 계열 제외"처럼 묶음으로 적힌 제외 조건은 표에 그대로 적어 두었으니 직접 확인해 주세요.
    등급 버튼의 숫자는 config의 best-spawner-config.json 가중치예요.
   </footer>

@@ -47,7 +47,7 @@ function rowHTML(p,ents){
  return `<tr><td class="c-no">${String(p.d).padStart(4,"0")}</td><td class="c-name"><button type="button" class="nm" data-i="${p.i}"><span class="ko">${esc(p.ko)}</span>${p.form?`<span class="form">${esc(p.form)}</span>`:""}<span class="en">${esc(p.en)}</span></button>${p.notes.map(t=>`<span class="note">${esc(t)}</span>`).join("")}</td><td class="c-rar">${rs.map(r=>`<span class="badge ${RAR[r].cls}">${RAR[r].ko}</span>`).join("")}</td><td class="c-spawn"><ul>${lines}</ul></td></tr>`;}
 
 const SPECIES=new Set(P.map(p=>p.d)).size;
-document.querySelector(".brand p").textContent=`${SPECIES}종 수록, COBBLEVERSE 공식 위키 기준`;
+document.querySelector(".brand p").textContent=`${SPECIES}종 수록, COBBLEVERSE 모드팩 데이터 기준`;
 function render(){
  const tb=document.getElementById("rows");let n=0,html="";const sp=new Set();
  for(const p of P){if(state.gen&&genOf(p.d)!==state.gen)continue;if(!searchOK(p,state.q))continue;const ents=matchEntries(p,state.loc,state.rar);if(!ents.length)continue;n++;sp.add(p.d);html+=rowHTML(p,ents);}

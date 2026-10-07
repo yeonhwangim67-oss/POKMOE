@@ -7,9 +7,11 @@ function renderExtra(p){
  const ab=(id,hid)=>{const a=ABIL[id]||[id,""];return `<li><b>${esc(a[0])}</b>${hid?`<span class="hid">숨겨진 특성</span>`:""}${a[1]?`<span class="ad">${esc(a[1])}</span>`:""}</li>`;};
  const abil=x.a.map(id=>ab(id,false)).join("")+(x.h&&!x.a.includes(x.h)?ab(x.h,true):"");
  const same=x.h&&x.a.includes(x.h)?`<p class="dnote">숨겨진 특성도 ${esc(iyeyo((ABIL[x.h]||[x.h])[0]))}.</p>`:"";
- const drops=(x.d||[]).map(([it,pct,q])=>`<li><button type="button" class="ditem" data-item="${esc(it.replace(/ \(.*\)$/,""))}">${esc(it)}</button><span class="rate">${pct}%</span>${q?`<span class="qty">${esc(q)}개</span>`:""}</li>`).join("");
+ const dl=d=>(d||[]).map(([it,pct,q])=>`<li><button type="button" class="ditem" data-item="${esc(it.replace(/ \(.*\)$/,""))}">${esc(it)}</button><span class="rate">${pct}%</span>${q?`<span class="qty">${esc(q)}개</span>`:""}</li>`).join("");
+ const drops=dl(x.d);
+ const sd=(x.sd||[]).map(([w,d,n])=>`<h4 class="dsub">${esc(w)}</h4><ul class="dlist">${dl(d)}</ul>${n?`<p class="dnote">한 번에 최대 ${n}가지까지 떨어져요.</p>`:""}`).join("");
  box.innerHTML=`<div class="shead"><h3>특성</h3></div><ul class="abil">${abil}</ul>${same}`+
-  `<div class="shead"><h3>잡거나 쓰러뜨리면 떨어지는 아이템</h3></div>`+(drops?`<ul class="dlist">${drops}</ul><p class="dnote">${x.n?`한 번에 최대 ${x.n}가지까지 떨어져요. `:""}100%는 개수 범위 안에서 항상 나온다는 뜻이에요(0개가 나올 수도 있어요). 아이템을 누르면 아이템 도감에서 찾아 줘요.</p>`:`<p class="dnote">떨어뜨리는 아이템이 없어요.</p>`);}
+  `<div class="shead"><h3>잡거나 쓰러뜨리면 떨어지는 아이템</h3></div>`+(sd?`<h4 class="dsub">그 밖의 곳에서 나온 개체</h4>`:"")+(drops?`<ul class="dlist">${drops}</ul><p class="dnote">${x.n?`한 번에 최대 ${x.n}가지까지 떨어져요. `:""}100%는 개수 범위 안에서 항상 나온다는 뜻이에요(0개가 나올 수도 있어요). 아이템을 누르면 아이템 도감에서 찾아 줘요.</p>`:`<p class="dnote">떨어뜨리는 아이템이 없어요.</p>`)+sd;}
 const _openDetail=openDetail;
 openDetail=function(p){_openDetail(p);renderExtra(p);};
 document.addEventListener("click",ev=>{const b=ev.target.closest(".ditem");if(!b)return;
