@@ -22,8 +22,8 @@ P.forEach(p=>{ if(!p.ko||(/[A-Za-z]/.test(p.ko)&&!KO_LATIN_OK.has(p.ko)))bad(`${
 Object.entries(BASE).forEach(([d,s])=>{if(s.length!==6||s.some(isNaN))bad(`종족값 형식 ${d}`)});
 Object.entries(MEGA).forEach(([d,ms])=>ms.forEach(([n,s])=>{if(!BASE[d])return bad(`${n}: 기본 종족값 없음`);const t=s.reduce((a,b)=>a+b),b=BASE[d].reduce((a,c)=>a+c);if(t-b!==100)console.log(`확인 필요: ${n} 합계 차이 ${t-b} (보통 +100)`)}));
 // 아이템 검사: 번역이 빠진 곳은 생성기가 "?영어"로 남긴다
-const ICATS=new Set(["held","evo","med","ball","food","tm","plant","etc","cv","leader"]);
-ITEMS.forEach(it=>{const s=JSON.stringify([it.ko,it.subs.map(x=>[x[1],x[2]]),it.how.map(h=>[h.h,h.t,h.out,h.g,h.in,h.s,h.hdr,h.rows])]);
+const ICATS=new Set(["held","evo","med","ball","food","tm","plant","block","etc","cv","leader"]);
+ITEMS.forEach(it=>{const s=JSON.stringify([it.ko,it.subs.map(x=>[x[1],x[2]]),it.how.map(h=>[h.h,h.t,h.out,h.g,h.in,h.s,h.hdr,h.rows]),(it.use||[]).map(h=>[h.h,h.t,h.list,h.hdr,h.rows])]);
  if(!it.ko||/[A-Za-z]{3,}/.test(it.ko.replace(/DNA/g,"")))bad(`아이템 ${it.en}: 한국어 이름이 없거나 영어가 섞임`);
  if(/"\?[A-Za-z(]/.test(s))bad(`아이템 ${it.en}: 번역 빠짐`);
  if(!ICATS.has(it.cat))bad(`아이템 ${it.en}: 분류 ${it.cat}`);

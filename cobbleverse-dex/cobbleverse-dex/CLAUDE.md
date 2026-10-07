@@ -68,13 +68,14 @@ Alolan → `알로라`, Galarian → `가라르`, Hisuian → `히스이`, Palde
 ## 아이템 도감 (items.js)
 
 - 출처
-  - 일반 아이템의 획득 경로: 코블몬 공식 위키(wiki.cobblemon.com)의 `Category:Item` 문서. 위키 문서 하나를 `itm({...})` 하나로 옮긴다.
+  - 일반 아이템의 획득 경로와 사용법: 코블몬 공식 위키(wiki.cobblemon.com)의 `Category:Item` 문서, 그리고 분류가 빠져 있지만 아이템·블록 정보 상자가 있는 문서(민트, 민트 잎, 민트 씨앗, TM 머신, 진화의돌 광석 등). 위키 문서 하나를 `itm({...})` 하나로 옮긴다.
   - 코블버스 전용 아이템: LUMYVERSE `special-items-where-find-them` 표. 관장 소환 아이템: `signature-items` 페이지.
   - 아이템·재료 이름과 효과 설명: 코블몬, Mega Showdown, 마인크래프트의 게임 안 한국어 번역 파일(ko_kr.json)을 그대로 쓴다. 번역 파일에 없는 코블버스 전용 이름은 뜻을 살려 옮기고 NOTES.md에 적는다.
-- 형식: `itm({en, ko, cat, src, mod?, subs:[[영어, 한국어, 효과]], how:[경로...]})`
-  - `cat`: held(지닌 물건), evo(진화), med(회복·성장), ball(몬스터볼·낚싯대), food(요리·음식), tm(기술머신·주얼), plant(작물·열매), etc(재료·기타), cv(코블버스 전용), leader(관장 소환)
+- 형식: `itm({en, ko, cat, src, mod?, subs:[[영어, 한국어, 효과]], how:[경로...], use?:[사용법...]})`
+  - `cat`: held(지닌 물건), evo(진화), med(회복·성장), ball(몬스터볼·낚싯대), food(요리·음식), tm(기술머신·주얼), plant(작물·열매), block(블록·설비), etc(재료·기타), cv(코블버스 전용), leader(관장 소환)
   - 경로 `m`: craft/cook(`g`: 3×3 칸 9개, `s`: 양념 칸, `free`: 모양 무관), brew/smelt/smith/input(`in` → `out`), drop(`rows`: [도감번호, 폼, 확률, 개수]), text(`t`), table(`hdr`, `rows`). `h`는 소제목.
-- 위키 문장은 획득 방법만 옮긴다. 효과는 게임 번역의 툴팁을 쓴다.
+  - 사용법 `use`: 위키 "Usage" 절의 text/table과, 이 아이템을 재료로 만드는 결과물 목록 `{m:"made", list:[...]}`.
+- 위키 문장은 획득 방법(`how`)과 사용법(`use`)만 옮긴다. 한 줄 효과는 게임 번역의 툴팁을 쓴다.
 
 ## 작업 순서 (세대 하나마다)
 

@@ -1,5 +1,5 @@
 // 아이템 도감 화면 (app.js 다음에 실행. app.js의 esc, cho, isCho, P, openDetail을 함께 씀)
-const ICAT=[["held","지닌 물건"],["evo","진화 아이템"],["med","회복·성장"],["ball","몬스터볼·낚싯대"],["food","요리·음식"],["tm","기술머신·주얼"],["plant","작물·열매"],["etc","재료·기타"],["cv","코블버스 전용"],["leader","관장 소환"]];
+const ICAT=[["held","지닌 물건"],["evo","진화 아이템"],["med","회복·성장"],["ball","몬스터볼·낚싯대"],["food","요리·음식"],["tm","기술머신·주얼"],["plant","작물·열매"],["block","블록·설비"],["etc","재료·기타"],["cv","코블버스 전용"],["leader","관장 소환"]];
 const ICATKO=Object.fromEntries(ICAT);
 const MLABEL={craft:"제작",cook:"요리",brew:"양조",smelt:"제련",smith:"대장장이 작업대",input:"기타",drop:"포켓몬 드롭",text:"획득 방법",table:"표"};
 const MPLACE={craft:"작업대",cook:"모닥불 냄비",brew:"양조기",smelt:"화로",smith:"대장장이 작업대"};
@@ -8,6 +8,7 @@ const POKE_BY_DEX={};P.forEach(p=>{if(!p.form&&!POKE_BY_DEX[p.d])POKE_BY_DEX[p.d
 ITEMS.forEach((it,i)=>{it.i=i;
  const words=[it.ko,it.en,...it.subs.flatMap(s=>[s[0],s[1]])];
  it.how.forEach(h=>{if(h.out)words.push(h.out);(h.g||[]).forEach(x=>x&&words.push(x));(h.in||[]).forEach(x=>x&&words.push(x));(h.s||[]).forEach(x=>x&&words.push(x));});
+ (it.use||[]).forEach(u=>{if(u.list)u.list.forEach(x=>words.push(x));});
  it.key=words.join(" ").toLowerCase().replace(/\s/g,"");it.cho=cho(words.filter(w=>/[가-힣]/.test(w)).join(""));});
 
 function iSearchOK(it,q){const s=q.toLowerCase().replace(/\s/g,"");if(!s)return true;if(isCho(s))return it.cho.includes(s);return it.key.includes(s);}
@@ -24,9 +25,10 @@ function routeHTML(h){
  if(m==="smelt"||m==="input"||m==="smith")return `<div class="flow">${(h.in||[]).filter(Boolean).map(x=>`<span class="chip">${esc(x)}</span>`).join('<span class="plus">+</span>')}<span class="arrow">→</span><span class="outp">${esc(h.out||"")}</span></div>`;
  if(m==="drop")return `<ul class="drops">${h.rows.map(([d,f,rate,q])=>{const p=POKE_BY_DEX[d];const nm=p?p.ko:"No."+d;return `<li><button type="button" class="dp" data-d="${d}"><span class="no">${String(d).padStart(4,"0")}</span>${esc(nm)}${f?` <span class="form">${esc(f)}</span>`:""}</button><span class="rate">${esc(rate)}</span>${q?`<span class="qty">×${esc(q)}</span>`:""}</li>`;}).join("")}</ul>`;
  if(m==="text")return `<p class="ht">${esc(h.t)}</p>`;
+ if(m==="made")return `<div class="made"><span class="ml">이걸로 만들 수 있는 것</span>${h.list.map(x=>`<span class="chip">${esc(x)}</span>`).join("")}</div>`;
  if(m==="table")return `<div class="tw"><table class="mini"><thead><tr>${h.hdr.map(x=>`<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${h.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
  return "";}
-function groupsOf(it){const g=[];it.how.forEach(h=>{const label=h.h||MLABEL[h.m];let last=g[g.length-1];if(!last||last.label!==label){last={label,place:MPLACE[h.m]&&!h.h?MPLACE[h.m]:(MPLACE[h.m]||""),list:[]};g.push(last);}last.list.push(h);});return g;}
+function groupsOf(it){const g=[];it.how.forEach(h=>{const label=h.m==="made"?"재료로 쓰임":(h.h||MLABEL[h.m]);let last=g[g.length-1];if(!last||last.label!==label){last={label,place:MPLACE[h.m]&&!h.h?MPLACE[h.m]:(MPLACE[h.m]||""),list:[]};g.push(last);}last.list.push(h);});return g;}
 function itemHTML(it,open){
  const q=istate.q.toLowerCase().replace(/\s/g,"");
  const hit=x=>JSON.stringify(x).toLowerCase().replace(/\s/g,"").includes(q);
@@ -39,9 +41,12 @@ function itemHTML(it,open){
  const subs=it.subs.length>1||(it.subs[0]&&it.subs[0][1]!==it.ko)
   ?`<ul class="subs">${subsShown.map(s=>`<li><b>${esc(s[1])}</b>${s[2]?`<span>${esc(s[2])}</span>`:""}</li>`).join("")}</ul>`
   :(it.subs[0]&&it.subs[0][2]?`<p class="eff">${esc(it.subs[0][2])}</p>`:"");
- const body=gs.map(g=>`<section class="rg"><h4>${esc(g.label)}${g.place?`<small>${esc(g.place)}</small>`:""}</h4>${g.list.map(routeHTML).join("")}</section>`).join("");
+ const secHTML=gs=>gs.map(g=>`<section class="rg"><h4>${esc(g.label)}${g.place?`<small>${esc(g.place)}</small>`:""}</h4>${g.list.map(routeHTML).join("")}</section>`).join("");
+ const body=secHTML(gs);
+ const ug=it.use?groupsOf({how:it.use.map(u=>u.m==="text"&&!u.h?{...u,h:"사용법"}:u)}).map(g=>({...g,place:""})):[];
+ const useHTML=it.use&&!narrow?`<details class="routes uses"${open?" open":""}><summary><span class="sum-l">사용법</span>${[...new Set(ug.map(g=>g.label))].filter(l=>l!=="사용법").slice(0,6).map(l=>`<span class="mchip">${esc(l)}</span>`).join("")}</summary>${secHTML(ug)}</details>`:"";
  return `<article class="itm"><header><div class="ih"><h3>${esc(it.ko)}</h3><span class="en">${esc(it.en)}</span></div><div class="tags"><span class="tag">${esc(ICATKO[it.cat]||"")}</span>${it.mod?`<span class="tag src">${esc(it.mod)}</span>`:""}</div></header>${subs}
- <details class="routes"${open?" open":""}><summary><span class="sum-l">얻는 방법</span>${methods.map(m=>`<span class="mchip">${esc(m)}</span>`).join("")}</summary>${body||'<p class="ht">알려진 획득 방법이 없어요.</p>'}${hidden?`<p class="more2">검색어와 관계없는 경로 ${hidden}개는 숨겼어요. 검색어를 지우면 모두 보여요.</p>`:""}</details></article>`;}
+ <details class="routes"${open?" open":""}><summary><span class="sum-l">얻는 방법</span>${methods.map(m=>`<span class="mchip">${esc(m)}</span>`).join("")}</summary>${body||'<p class="ht">알려진 획득 방법이 없어요.</p>'}${hidden?`<p class="more2">검색어와 관계없는 경로 ${hidden}개는 숨겼어요. 검색어를 지우면 모두 보여요.</p>`:""}</details>${useHTML}</article>`;}
 function renderItems(){
  const list=ITEMS.filter(it=>(!istate.cat||it.cat===istate.cat)&&iSearchOK(it,istate.q));
  const open=list.length<=4;
