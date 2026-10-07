@@ -68,3 +68,12 @@ Claude Code가 작업하면서 확실하지 않은 번역, 종족값, 위키 표
 - 확신이 없는 구조물 번역: `Split Decision Temple (Sinnoh)` → "결단의 신전 (신오)", `Crown Cemetery` → "크라운 묘지"(기존 Crown Spire "크라운 첨탑"에 맞춤), `Stonjourner Henge Ruins` → "돌헨진 헨지 유적", `Eternatus Cocoon (End)` → "무한다이노 고치 (엔드)". 바닐라: Bastion Remnant 보루 잔해, Nether Fortress 네더 요새.
 - 근처 블록 `Coal Ore`(단수)는 3세대 `Coal Ores`와 같은 "석탄 광석 근처"로 묶었어요. `Berries` → "열매 근처", `Kelp Plant, Seagrass` → "켈프/해초 근처".
 - 8세대에는 원작 메가진화가 없어요(대여르 메가는 Legends Z-A 신규).
+
+## 9세대
+- 위키에 없음: 1000 타부자고. gen9 페이지 원본 HTML에 카드가 없어요. `STAT_RAW`에는 번호가 밀리지 않도록 종족값이 들어 있어요.
+- 폼 이름: 파밀리쥐 네 식구/세 식구, 노고고치 두 마디폼/세 마디폼, 모으령 도보폼/상자폼은 공식 이름을 썼어요(띄어쓰기는 다를 수 있어요). 모으령 기본 종족값은 상자폼이고, 도보폼은 종족값이 달라 `FORM_STATS["999|도보폼"]`에 넣었어요.
+- 확신이 없는 폼 이름: 1012 차데스 "Counterfeit/Artisan Form" → `짝퉁폼`/`진품폼`, 1013 그우린차 "Unremarkable/Masterpiece Form" → `범작폼`/`걸작폼`. 공식 한국어 폼 이름을 확인하지 못했어요. 그우린차 걸작폼은 원작에서 종족값이 같아요.
+- 확신이 없는 구조물 번역(재앙의 보물 사당): Grasswither Shrine "초목 시듦의 사당", Icerend Shrine "얼음 갈라짐의 사당", Groundblight Shrine "대지 재앙의 사당", Firescourge Shrine "불 재앙의 사당".
+- 근처 블록 `Amethyst Block, Budding Amethyst` → "자수정 블록/싹트는 자수정 근처", 테라파고스의 `Base Blocks: Amethyst Block` → "자수정 블록 위".
+- 1017 오거폰, 1024 테라파고스: 위키에 폼 표시가 없어서 기본 종족값을 썼어요.
+- 9세대에는 원작 메가진화가 없어요(스코빌런·킬라플로르·싸리용·드닐레이브 메가는 Legends Z-A 신규).
