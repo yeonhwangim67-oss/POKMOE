@@ -226,6 +226,13 @@ table.mini th,table.mini td{position:static;padding:5px 8px;border-bottom:1px so
  #itemView table.mini td{display:table-cell;padding:5px 8px;border-bottom:1px solid var(--line)}
  .recipe{grid-template-columns:auto auto 1fr}
 }
+
+/* 넓은 화면: 왼쪽 고르는 칸이 스크롤을 따라 화면에 붙어 있게 */
+@media (min-width:861px){
+ .layout{background:linear-gradient(90deg,var(--spruce) 260px,transparent 260px)}
+ #pick,#ipick{position:sticky;top:0;align-self:start;max-height:100vh}
+ #pick .side,#ipick .side{position:static;max-height:100vh;overflow:auto}
+}
 </style>
 </head>
 <body>
